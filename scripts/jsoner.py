@@ -4,8 +4,7 @@
 #
 
 import json
-from contents import contents
+from volume.assets.contents import contents
 
-with open('contents.json', 'w') as json_file:
+with open('volume/contents.json', 'w') as json_file:
     json.dump(contents, json_file)
-
