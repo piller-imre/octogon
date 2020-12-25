@@ -12,4 +12,5 @@ Octogon Mathematical Magazine
 
 
    pages/schema
+   pages/mockups
 
