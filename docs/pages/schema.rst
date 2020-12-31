@@ -1,6 +1,12 @@
 Schema of the Data Model
 ========================
 
+Relational schema
+-----------------
+
+.. image:: /pages/images/schema.png
+
+
 Article data
 ------------
 
