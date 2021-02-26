@@ -16,11 +16,14 @@ it:
 	sphinx-build -M html . _build
 
 open:
-	chrome _build/html/index.html &
+	xdg-open _build/html/index.html &
 
 upload:
 	rsync -avz _build/html/* imre@mat76.mat.uni-miskolc.hu:/home/imre/public_html/octogon
 	echo 'http://mat76.mat.uni-miskolc.hu/~imre/octogon/'
+
+check:
+	xdg-open http://mat76.mat.uni-miskolc.hu/~imre/octogon/
 
 .PHONY: help Makefile
 

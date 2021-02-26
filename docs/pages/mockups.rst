@@ -78,16 +78,16 @@ For editing its title and its abstract (after clicking the ``Edit article data``
 Author data
 -----------
 
-The data of the authors are managed independently from articles:
+The data of the contributors (authors and editors) are managed independently from articles:
 
-.. image:: /pages/images/author_list.png
+.. image:: /pages/images/contributor_list.png
 
 * The filter expression is an arbitrary text. In simple cases the webpage apply substring search.
-* All authors should be unique in the database.
+* All contributors should be unique in the database.
 
-For create/edit an author:
+For create/edit a contributor:
 
-.. image:: /pages/images/edit_author.png
+.. image:: /pages/images/edit_contributor.png
 
 
 Authorship management
@@ -100,4 +100,26 @@ Authorship management is necessary, because in some cases (typically) the affili
 * The authorship is a binding between the articles and authors.
 * The fields on this page is uploaded automatically after the selection of the given author.
 * It results that, the author data can be edited independently for public pages, while the references to the same person (and legacy data) will do not break.
+
+Archive page
+------------
+
+.. image:: /pages/images/archive.png
+
+* The latest issue is at first.
+
+Editorial Board page
+--------------------
+
+* List of names and affiliations
+
+Edit the Editorial Board
+------------------------
+
+.. image:: /pages/images/editor_list.png
+
+* This page is available for the administrator.
+* The *Create contributor* button opens the *Edit contributor* page.
+
+.. TODO: Define pages for news and its editing for the home page!
 
