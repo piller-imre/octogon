@@ -1,17 +1,38 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div>
+      <router-link :to="{name: 'Home'}">Home</router-link>
+      <router-link :to="{name: 'Archive'}">Archive</router-link>
+      <router-link :to="{name: 'Rules'}">Rules</router-link>
+      <router-link :to="{name: 'EditorialBoard'}">Editorial Board</router-link>
+      <router-link :to="{name: 'Contacts'}">Contacts</router-link>
+    </div>
+    <div>
+      <router-view :key="$route.fullPath"></router-view>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
   name: 'App',
-  components: {
-    HelloWorld
+  methods: {
+    isAdmin() {
+      let adminPages = [
+        'ProductListRoot',
+        'ProductList',
+        'EditProduct',
+        'NewMainCategory',
+        'NewSubCategory',
+        'NewProduct'
+      ];
+      if (adminPages.includes(this.$route.name)) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
   }
 }
 </script>
