@@ -1,16 +1,23 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import Archive from '@/components/Archive'
-import Contacts from '@/components/Contacts'
-import EditorialBoard from '@/components/EditorialBoard'
-import Home from '@/components/Home'
-import Rules from '@/components/Rules'
+import Login from '@/components/Login'
+
+import Archive from '@/components/public/Archive'
+import Contacts from '@/components/public/Contacts'
+import EditorialBoard from '@/components/public/EditorialBoard'
+import Home from '@/components/public/Home'
+import Rules from '@/components/public/Rules'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login
+    },
     {
       path: '/home',
       name: 'Home',
