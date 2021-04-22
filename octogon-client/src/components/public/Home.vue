@@ -1,13 +1,13 @@
 <template>
   <div>
-    Home
+    <h1>Home</h1>
     <div>
       <ul>
         <li>
           <router-link :to="{name: 'ArticleData'}">Article Data</router-link>
         </li>
         <li>
-          <router-link :to="{name: 'ArticleList'}">Article List</router-link>
+          <router-link :to="{name: 'ArticleTitleData'}">Article Title Data</router-link>
         </li>
         <li>
           <router-link :to="{name: 'ArticleTypeData'}">Article Type Data</router-link>

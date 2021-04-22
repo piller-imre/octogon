@@ -10,7 +10,7 @@ import Home from '@/components/public/Home'
 import Rules from '@/components/public/Rules'
 
 import ArticleData from '@/components/admin/ArticleData'
-import ArticleList from '@/components/admin/ArticleList'
+import ArticleTitleData from '@/components/admin/ArticleTitleData'
 import ArticleTypeData from '@/components/admin/ArticleTypeData'
 import ArticleTypeList from '@/components/admin/ArticleTypeList'
 import AuthorshipData from '@/components/admin/AuthorshipData'
@@ -63,9 +63,9 @@ export default new Router({
       component: ArticleData
     },
     {
-      path: '/article-list',
-      name: 'ArticleList',
-      component: ArticleList
+      path: '/article-title-data',
+      name: 'ArticleTitleData',
+      component: ArticleTitleData
     },
     {
       path: '/article-type-data',
