@@ -18,6 +18,7 @@ export default new Router({
       name: 'Login',
       component: Login
     },
+    // public pages
     {
       path: '/home',
       name: 'Home',
@@ -42,6 +43,62 @@ export default new Router({
       path: '/contacts',
       name: 'Contacts',
       component: Contacts
+    },
+    // admin pages
+    {
+      path: '/article-data',
+      name: 'ArticleData',
+      component: ArticleData
+    },
+    {
+      path: '/article-list',
+      name: 'ArticleList',
+      component: ArticleList
+    },
+    {
+      path: '/article-type-data',
+      name: 'ArticleTypeData',
+      component: ArticleTypeData
+    },
+    {
+      path: '/article-type-list',
+      name: 'ArticleTypeList',
+      component: ArticleTypeList
+    },
+    {
+      path: '/authorship-data',
+      name: 'AuthorshipData',
+      component: AuthorshipData
+    },
+    {
+      path: '/contributor-data',
+      name: 'ContributorData',
+      component: ContributorData
+    },
+    {
+      path: '/contributor-list',
+      name: 'ContributorList',
+      component: ContributorList
+    },
+    {
+      path: '/editorial-board-data',
+      name: 'EditorialBoardData',
+      component: EditorialBoardData
+    },
+    {
+      path: '/volume-content',
+      name: 'VolumeContent',
+      component: VolumeContent
+    },
+    {
+      path: '/volume-data',
+      name: 'VolumeData',
+      component: VolumeData
+    },
+    {
+      path: '/volume-list',
+      name: 'VolumeList',
+      component: VolumeList
     }
   ]
 })
