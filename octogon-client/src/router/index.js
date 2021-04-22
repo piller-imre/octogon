@@ -9,6 +9,18 @@ import EditorialBoard from '@/components/public/EditorialBoard'
 import Home from '@/components/public/Home'
 import Rules from '@/components/public/Rules'
 
+import ArticleData from '@/components/admin/ArticleData'
+import ArticleList from '@/components/admin/ArticleList'
+import ArticleTypeData from '@/components/admin/ArticleTypeData'
+import ArticleTypeList from '@/components/admin/ArticleTypeList'
+import AuthorshipData from '@/components/admin/AuthorshipData'
+import ContributorData from '@/components/admin/ContributorData'
+import ContributorList from '@/components/admin/ContributorList'
+import EditorialBoardData from '@/components/admin/EditorialBoardData'
+import VolumeContent from '@/components/admin/VolumeContent'
+import VolumeData from '@/components/admin/VolumeData'
+import VolumeList from '@/components/admin/VolumeList'
+
 Vue.use(Router)
 
 export default new Router({
