@@ -2,14 +2,16 @@
   <div>
     <h1>Edit Article Type</h1>
     <div>
-      <div>
-        Name <input type="text" v-model="articleType.name" placeholder="name" />
+      <div class="input-field">
+        <span class="field-name">Name</span>
+        <input type="text" v-model="articleType.name" placeholder="name" />
       </div>
-      <div>
-        Description <input type="text" v-model="articleType.description" placeholder="description" />
+      <div class="input-field">
+        <span class="field-name">Description</span>
+        <input type="text" v-model="articleType.description" placeholder="description" />
       </div>
     </div>
-    <div>
+    <div class="error-message">
       {{ errorMessage }}
     </div>
     <div>

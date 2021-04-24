@@ -1,16 +1,21 @@
 <template>
   <div>
     <h1>Article Title and Abstract</h1>
-    <div>
+    <div class="article-volume">
     Volume {{ article.volume.volume }}, Number {{ article.volume.number }}, Year {{ article.volume.year }}
     </div>
-    <div>
-      Title <input type="text" v-model="article.title" placeholder="title" />
+    <div class="input-field">
+      <span class="field-name">Title</span>
+      <input type="text" v-model="article.title" placeholder="title" />
     </div>
-    <div>
-      Abstract <input type="text" v-model="article.abstract" placeholder="abstract" />
+    <div class="input-field">
+      <span class="field-name">Abstract</span>
+      <input type="text" v-model="article.abstract" placeholder="abstract" />
     </div>
     <button @click="renderAbstract">Render abstract</button>
+    <div class="error-message">
+      {{ errorMessage }}
+    </div>
     <div>
       <button v-on:click="saveArticleTitleData">Save</button>
       <button v-on:click="cancel">Cancel</button>
@@ -33,7 +38,8 @@ export default {
         },
         title: "",
         abstract: ""
-      }
+      },
+      errorMessage: "Possible error message"
     }
   },
   methods: {

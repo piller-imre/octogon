@@ -7,11 +7,19 @@
         <router-link :to="{name: 'ArticleData'}" tag="button">Create new article</router-link>
       </div>
       <div>
-        <div v-for="article in contents.articles" v-bind:key="article.id">
-          <span v-for="author in article.authors" v-bind:key="author">{{ author }}, </span>
-          : {{ article.title }}
-          <router-link :to="{name: 'ArticleData'}">Edit</router-link>
-          <a href="#" @click="removeArticle(article.id)">Remove</a>
+        <div v-for="article in contents.articles" v-bind:key="article.id" class="article-item">
+          <div>
+            <span v-for="author in article.authors" v-bind:key="author">{{ author }}, </span>:
+            <div>{{ article.title }}</div>
+          </div>
+          <div class="action-button">
+            <span>
+              <router-link :to="{name: 'ArticleData'}">Edit</router-link>
+            </span>
+            <span>
+              <a href="#" @click="removeArticle(article.id)">Remove</a>
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -62,5 +70,26 @@ export default {
 </script>
 
 <style>
+div.article-item {
+  padding: 10px;
+  background-color: #FFF8F8;
+  margin-bottom: 12px;
+  border: solid #CCCCCC 1px;
+}
+
+div.article-item div {
+  display: inline-block;
+}
+
+div.action-button {
+  width: 100px;
+  display: inline-block;
+  margin-right: 10px;
+  float: right;
+}
+
+div.action-button span {
+  margin-right: 10px;
+}
 </style>
 

@@ -2,27 +2,32 @@
   <div>
     <h1>Edit Volume</h1>
     <div>
-      <div>
-        Volume <input type="text" v-model="volume.volume" placeholder="volume" />
+      <div class="input-field">
+        <span class="field-name">Volume</span>
+        <input type="text" v-model="volume.volume" placeholder="volume" />
       </div>
-      <div>
-        Number <input type="text" v-model="volume.number" placeholder="number" />
+      <div class="input-field">
+        <span class="field-name">Number</span>
+        <input type="text" v-model="volume.number" placeholder="number" />
       </div>
-      <div>
-        Year <input type="text" v-model="volume.year" placeholder="year" />
+      <div class="input-field">
+        <span class="field-name">Year</span>
+        <input type="text" v-model="volume.year" placeholder="year" />
       </div>
-      <div>
-        Month <input type="text" v-model="volume.month" placeholder="month" />
+      <div class="input-field">
+        <span class="field-name">Month</span>
+        <input type="text" v-model="volume.month" placeholder="month" />
       </div>
-      <div>
-        Cover image <input type="text" v-model="volume.coverImage" placeholder="cover image" />
+      <div class="input-field">
+        <span class="field-name">Cover image</span>
+        <input type="text" v-model="volume.coverImage" placeholder="cover image" />
       </div>
-      <div>
-        Visible?
+      <div class="input-field">
+        <span class="field-name">Visible?</span>
         <input type="checkbox" id="visibility-checkbox" v-model="volume.isVisible">
         <label for="visibility-checkbox">{{ volume.isVisible}}</label>
       </div>
-      <div>
+      <div class="error-message">
         {{ errorMessage }}
       </div>
       <div>

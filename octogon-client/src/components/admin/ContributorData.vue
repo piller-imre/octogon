@@ -2,20 +2,24 @@
   <div>
     <h1>Edit Contributor</h1>
     <div>
-      <div>
-        First name <input type="text" v-model="contributor.firstName" placeholder="first name" />
+      <div class="input-field">
+        <span class="field-name">First name</span>
+        <input type="text" v-model="contributor.firstName" placeholder="first name" />
       </div>
-      <div>
-        Family name <input type="text" v-model="contributor.familyName" placeholder="family name" />
+      <div class="input-field">
+        <span class="field-name">Family name</span>
+        <input type="text" v-model="contributor.familyName" placeholder="family name" />
       </div>
-      <div>
-        Email <input type="text" v-model="contributor.email" placeholder="email" />
+      <div class="input-field">
+        <span class="field-name">Email</span>
+        <input type="text" v-model="contributor.email" placeholder="email" />
       </div>
-      <div>
-        Affiliation <input type="text" v-model="contributor.affiliation" placeholder="affiliation" />
+      <div class="input-field">
+        <span class="field-name">Affiliation</span>
+        <input type="text" v-model="contributor.affiliation" placeholder="affiliation" />
       </div>
     </div>
-    <div>
+    <div class="error-message">
       {{ errorMessage }}
     </div>
     <div>
