@@ -1,0 +1,94 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Octogon Mathematical Magazine
+  description: API description of the Octogon homepage
+  contact:
+    name: Imre Piller
+    email: piller.imre@gmail.com
+  license:
+    name: MIT
+paths:
+  /login:
+    post:
+      description: Check the user credentials and provide the authentication token.
+      operationId: login
+      requestBody:
+        description: User credentials
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Credential'
+      responses:
+        '200':
+          description: Successful authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationToken'
+        '401':
+          description: Access denied
+        default:
+          description: unexpected error
+components:
+  schemas:
+    Credential:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+          format: password
+    AuthenticationToken:
+      type: object
+      required:
+        - token
+      properties:
+        token:
+          type: string
+    Volume:
+      type: object
+      properties:
+        id:
+          type: integer
+        volume:
+          type: integer
+        number:
+          type: integer
+        year:
+          type: integer
+        month:
+          type: integer
+        coverImage:
+          type: string
+        isVisible:
+          type: boolean
+    Contributor:
+      type: object
+      properties:
+        id:
+          type: integer
+        firstName:
+          type: string
+        familyName:
+          type: string
+        affiliation:
+          type: string
+        email:
+          type: string
+    ArticleType:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+
+
