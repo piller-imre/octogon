@@ -1,0 +1,57 @@
+\documentclass[a4paper]{article}
+
+% Set margins
+\usepackage[hmargin=4cm, vmargin=3cm]{geometry}
+
+\frenchspacing
+
+% Language packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[magyar]{babel}
+
+% AMS
+\usepackage{amssymb,amsmath}
+
+% Graphic packages
+\usepackage{graphicx}
+
+\begin{document}
+
+{% for item in items %}
+\hrule
+
+\medskip
+
+\noindent {{ item['authors']|format_authors }}
+
+\emph{ {{ item['title'] }} }
+
+\medskip
+
+\hrule
+
+\medskip
+
+\noindent \textbf{\large {{ item['title'] }} }
+
+\noindent {{ item['authors']|format_authors }}
+
+\medskip
+
+\noindent {{ item['abstract'] }}
+
+\medskip
+
+\hrule
+
+\medskip
+
+\noindent source: {{ item['source'] }}
+
+\newpage
+
+{% endfor %}
+
+\end{document}
+
