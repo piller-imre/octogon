@@ -22,6 +22,52 @@ After a successful sign in the following menus appear:
 
 For closing the privilegized session, it is necessary a ``Sign out`` button.
 
+News (Posts)
+------------
+
+List the posts (which are available on *News* page)
+
+.. image:: /pages/images/list_posts.png
+
+* The posts are in descending order by date.
+
+Edit the post data:
+
+.. image:: /pages/images/edit_post.png
+
+* The posts are identified by dates.
+* The date set automatically on creation but can be edited.
+* The posting considered as a rare event, which means that only one post is possible for a given date. (Maximum 1 post per day.)
+
+Edit rules and contact information
+----------------------------------
+
+There is a link from the menu to edit the rules:
+
+.. image:: /pages/images/edit_rules.png
+
+The editing of contact information is similar:
+
+.. image:: /pages/images/edit_contact.png
+
+.. warning::
+    
+    After editing these pages, the previous versions are only available from the backups.
+
+Files
+-----
+
+There is a separate page for listing and uploading files:
+
+.. image:: /pages/images/files.png
+
+* The filename is the name of the uploaded file.
+* You can get the download link directly from the listing.
+* The files are uploaded to the :code:`/files` directory.
+
+.. warning::
+
+    All of the uploaded files become publicly available after uploading! (Regardless of citing links.)
 
 Volume data
 -----------
