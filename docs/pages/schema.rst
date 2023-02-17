@@ -6,34 +6,9 @@ Relational schema
 
 .. image:: /pages/images/schema.png
 
-
-Article data
-------------
-
-* ``title``: title of the paper
-* ``authors``: list of the authors' names
-* ``abstract``: abstract of the paper in LaTeX format
-* ``page_start``: number of the first page in the volume
-* ``page_end``: number of the last page in the volume
-* ``volume_id``: reference to the volume
-* ``path``: path of the file for downloading (when available). It worth to organize downloadable files per number.
-
-
-Volume data
------------
-
-* ``volume_id``: an integer value, for instance ``28_1``
-* ``volume``: volume
-* ``number``: number
-* ``year``: year of publishing
-
-
-Author data
------------
-
-* ``name``: full name of the author
-* ``affiliation``: affiliation (university, country, ...)
-* ``orcid``: ORCID
-* ``homepage``: URL of the homepage of the author
-* ``email``: email address
-
+* The ``authorships`` table always contains any information for which should be displayed on the page. (It causes some redundancy, but makes possible to modify the e-mail address or the affiliation per article.)
+* The ``article_type.name`` field is unique.
+* The ``documents.name`` field is unique.
+* The ``content`` of ``pages`` and ``posts`` cannot be empty.
+* The ``articles.title`` cannot be empty.
+* The ``authorships.index`` considered only for a given article.
