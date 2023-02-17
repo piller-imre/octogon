@@ -13,6 +13,8 @@ paths:
     post:
       description: Check the user credentials and provide the authentication token.
       operationId: login
+      tags:
+        - authentication
       requestBody:
         description: User credentials
         required: true
@@ -31,6 +33,911 @@ paths:
           description: Access denied
         default:
           description: unexpected error
+  /posts/collect:
+    post:
+      description: List all of the available posts.
+      operationId: collectPosts
+      tags:
+        - posts
+      requestBody:
+        content:
+          application/json: {}
+      responses:
+        '200':
+          description: The posts have been successfully collected
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  posts:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        date:
+                          type: string
+                          format: date
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /posts/get:
+    post:
+      tags:
+        - posts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+      responses:
+        '200':
+          description: The post has been successfully accessed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  content:
+                    type: string
+                  date:
+                    type: string
+                    format: date
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /posts/create:
+    post:
+      description: Create a new post.
+      operationId: createPost
+      tags:
+        - posts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                date:
+                  type: string
+                  format: date
+      responses:
+        '200':
+          description: The post has been successfully created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /posts/update:
+    post:
+      description: Update a post.
+      operationId: updatePost
+      tags:
+        - posts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                content:
+                  type: string
+                date:
+                  type: string
+                  format: date
+      responses:
+        '200':
+          description: The post has been successfully updated
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /posts/remove:
+    post:
+      description: Remove a post.
+      operationId: removePost
+      tags:
+        - posts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+      responses:
+        '200':
+          description: The post has been successfully removed
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /rules/get:
+    post:
+      description: Get the content of the Rules page.
+      operationId: getRules
+      tags:
+        - rules
+      requestBody:
+        content:
+          application/json: {}
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: string
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /rules/update:
+    post:
+      description: Update the content of the Rules page.
+      operationId: updateRules
+      tags:
+        - rules
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+      responses:
+        '200':
+          description: The rules have been successfully updated.
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /contacts/get:
+    post:
+      description: Get the content of the Contacts page.
+      operationId: getContacts
+      tags:
+        - contacts
+      requestBody:
+        content:
+          application/json: {}
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: string
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /contacts/update:
+    post:
+      description: Update the content of the Contacts page.
+      operationId: updateContacts
+      tags:
+        - contacts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+      responses:
+        '200':
+          description: The contacts have been successfully updated.
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /files/upload:
+    post:
+      description: Upload a new file.
+      operationId: uploadFile
+      tags:
+        - files
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                orderId:
+                  type: integer
+                userId:
+                  type: integer
+                fileName:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Successful file upload.
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /files/remove:
+    post:
+      description: Remove a file.
+      operationId: removeFile
+      tags:
+        - files
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        '200':
+          description: The file have been successfully removed.
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /volumes/collect:
+    post:
+      description: Collect the volumes.
+      operationId: collectVolumes
+      tags:
+        - volumes
+      requestBody:
+        content:
+          application/json: {}
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    volume:
+                      type: integer
+                    number:
+                      type: integer
+                    year:
+                      type: integer
+                    month:
+                      type: integer
+                    isVisible:
+                      type: boolean
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /volumes/get:
+    post:
+      description: Get volume data.
+      operationId: getVolume
+      tags:
+        - volumes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  volume:
+                    type: integer
+                  number:
+                    type: integer
+                  year:
+                    type: integer
+                  month:
+                    type: integer
+                  coverImage:
+                    type: string
+                  isVisible:
+                    type: boolean
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /volumes/create:
+    post:
+      description: Create a new volume.
+      operationId: createVolume
+      tags:
+        - volumes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                volume:
+                  type: integer
+                number:
+                  type: integer
+                year:
+                  type: integer
+                month:
+                  type: integer
+                coverImage:
+                  type: string
+                isVisible:
+                  type: boolean
+      responses:
+        '200':
+          description: The volume have been successfully created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /volumes/update:
+    post:
+      description: Update the volume.
+      operationId: updateVolume
+      tags:
+        - volumes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                volume:
+                  type: integer
+                number:
+                  type: integer
+                year:
+                  type: integer
+                month:
+                  type: integer
+                isVisible:
+                  type: boolean
+      responses:
+        '200':
+          description: The volume have been successfully updated.
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /volumes/remove:
+    post:
+      description: Remove a volume.
+      operationId: removeVolume
+      tags:
+        - volumes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+      responses:
+        '200':
+          description: The volume has been successfully removed.
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /volumes/upload-cover-image:
+    post:
+      description: Upload the cover image of the volume.
+      operationId: uploadCoverImage
+      tags:
+        - volumes
+      requestBody:
+        content:
+          image/png:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '200':
+          description: The cover image of the volume has been successfully uploaded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /article-types/collect:
+    post:
+      description: Collect the article types.
+      operationId: collectArticleTypes
+      tags:
+        - article-types
+      requestBody:
+        content:
+          application/json: {}
+      responses:
+        '200':
+          description: The article types have been successfully collected
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  articleTypes:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        description:
+                          type: string
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /article-types/get:
+    post:
+      description: Get the article type.
+      operationId: getArticleType
+      tags:
+        - article-types
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+      responses:
+        '200':
+          description: The article type has been successfully accessed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  description:
+                    type: string
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /article-types/create:
+    post:
+      description: Create a new article type.
+      operationId: createArticleType
+      tags:
+        - article-types
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                  name:
+                    type: string
+                  description:
+                    type: string
+      responses:
+        '200':
+          description: The article type has been successfully created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /article-types/update:
+    post:
+      description: Update an article type.
+      operationId: updateArticleType
+      tags:
+        - article-types
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                name:
+                  type: string
+                description:
+                  type: string
+      responses:
+        '200':
+          description: The post has been successfully updated
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /article-types/remove:
+    post:
+      description: Remove an article type.
+      operationId: removeArticleType
+      tags:
+        - article-types
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+      responses:
+        '200':
+          description: The article type has been successfully removed
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /articles/collect:
+    post:
+      description: Collect the articles.
+      operationId: collectArticles
+      tags:
+        - articles
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                volumeId:
+                  type: integer
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  volume:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      volume:
+                        type: integer
+                      number:
+                        type: integer
+                      year:
+                        type: integer
+                      month:
+                        type: integer
+                      isVisible:
+                        type: boolean
+                  articles:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        articleType:
+                          type: string
+                        title:
+                          type: string
+                        authors:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              given_name:
+                                type: string
+                              family_name:
+                                type: string
+                              affiliation:
+                                type: string
+                              email:
+                                type: string
+                        articleFile:
+                          type: string
+                        firstPage:
+                          type: integer
+                        lastPage:
+                          type: integer
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /articles/get:
+    post:
+      description: Get an article.
+      operationId: getArticle
+      tags:
+        - articles
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  volume:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      volume:
+                        type: integer
+                      number:
+                        type: integer
+                      year:
+                        type: integer
+                      month:
+                        type: integer
+                      isVisible:
+                        type: boolean
+                  article:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      articleType:
+                        type: string
+                      title:
+                        type: string
+                      abstract:
+                        type: string
+                      authors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            given_name:
+                              type: string
+                            family_name:
+                              type: string
+                            affiliation:
+                              type: string
+                            email:
+                              type: string
+                      articleFile:
+                        type: string
+                      firstPage:
+                        type: integer
+                      lastPage:
+                        type: integer
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /articles/create:
+    post:
+      description: Create a new article.
+      operationId: createArticle
+      tags:
+        - articles
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                volumeId:
+                  type: integer
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /articles/update-title-data:
+    post:
+      description: Update the title data.
+      operationId: updateArticleTitleData
+      tags:
+        - articles
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                articleType:
+                  type: integer
+                title:
+                  type: string
+                abstract:
+                  type: string
+      responses:
+        '200':
+          description: Successful
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /articles/update-page-range:
+    post:
+      description: Update the page range.
+      operationId: updateArticlePageRange
+      tags:
+        - articles
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                firstPage:
+                  type: integer
+                lastPage:
+                  type: integer
+      responses:
+        '200':
+          description: Successful
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /articles/remove:
+    post:
+      description: Remove an article.
+      operationId: removeArticle
+      tags:
+        - articles
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+      responses:
+        '200':
+          description: The post has been successfully removed
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
 components:
   schemas:
     Credential:
@@ -90,5 +997,3 @@ components:
           type: string
         description:
           type: string
-
-

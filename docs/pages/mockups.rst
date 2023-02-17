@@ -19,6 +19,10 @@ After a successful sign in the following menus appear:
 * volumes
 * authors
 * article types
+* posts
+* files
+* rules
+* contact
 
 For closing the privilegized session, it is necessary a ``Sign out`` button.
 
