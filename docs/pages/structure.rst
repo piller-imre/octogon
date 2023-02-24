@@ -38,7 +38,7 @@ Directory structure
 
 * Displays the Editorial Board members.
 
-:code:`/contacts`
+:code:`/contacts.php`
 
 * Displays contact information.
 
