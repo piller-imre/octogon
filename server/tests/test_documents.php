@@ -1,0 +1,12 @@
+<?php
+
+createDocument_successful
+createDocument_missingName
+createDocument_existingName
+collectDocuments_empty
+collectDocuments_multiple
+removeDocument_successful
+removeDocument_invalidId
+removeDocument_inUse
+
+?>
