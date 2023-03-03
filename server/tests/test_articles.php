@@ -1,28 +1,99 @@
 <?php
 
-createArticle_successful
-createArticle_invalidType
-createArticle_missingTitle
-createArticle_invalidVolumeId
-createArticle_invalidFirstPage
-createArticle_invalidLastPage
-createArticle_invalidPageInterval
-createArticle_invalidDocumentId
-collectArticlesByVolume_empty
-collectArticlesByVolume_multiple
-collectArticlesByVolume_invalidId
-getArticleById_successful
-getArticleById_invalidId
-updateArticle_successful
-updateArticle_invalidId
-updateArticle_invalidType
-updateArticle_missingTitle
-updateArticle_invalidVolumeId
-updateArticle_invalidFirstPage
-updateArticle_invalidLastPage
-updateArticle_invalidPageInterval
-updateArticle_invalidDocumentId
-removeArticle_successful
-removeArticle_invalidId
+function test_createArticle_successful()
+{
+}
+
+function test_createArticle_invalidType()
+{
+}
+
+function test_createArticle_missingTitle()
+{
+}
+
+function test_createArticle_invalidVolumeId()
+{
+}
+
+function test_createArticle_invalidFirstPage()
+{
+}
+
+function test_createArticle_invalidLastPage()
+{
+}
+
+function test_createArticle_invalidPageInterval()
+{
+}
+
+function test_createArticle_invalidDocumentId()
+{
+}
+
+function test_collectArticlesByVolume_empty()
+{
+}
+
+function test_collectArticlesByVolume_multiple()
+{
+}
+
+function test_collectArticlesByVolume_invalidId()
+{
+}
+
+function test_getArticleById_successful()
+{
+}
+
+function test_getArticleById_invalidId()
+{
+}
+
+function test_updateArticle_successful()
+{
+}
+
+function test_updateArticle_invalidId()
+{
+}
+
+function test_updateArticle_invalidType()
+{
+}
+
+function test_updateArticle_missingTitle()
+{
+}
+
+function test_updateArticle_invalidVolumeId()
+{
+}
+
+function test_updateArticle_invalidFirstPage()
+{
+}
+
+function test_updateArticle_invalidLastPage()
+{
+}
+
+function test_updateArticle_invalidPageInterval()
+{
+}
+
+function test_updateArticle_invalidDocumentId()
+{
+}
+
+function test_removeArticle_successful()
+{
+}
+
+function test_removeArticle_invalidId()
+{
+}
 
 ?>

@@ -30,11 +30,28 @@ function test_getArticleTypeById_invalid()
     
 }
 
-updateArticleType_successful
-updateArticleType_invalidId
-updateArticleType_missingName
-updateArticleType_existingName
-removeArticleType_successful
-removeArticleType_inUse
+function test_updateArticleType_successful()
+{
+}
+
+function test_updateArticleType_invalidId()
+{
+}
+
+function test_updateArticleType_missingName()
+{
+}
+
+function test_updateArticleType_existingName()
+{
+}
+
+function test_removeArticleType_successful()
+{
+}
+
+function test_removeArticleType_inUse()
+{
+}
 
 ?>

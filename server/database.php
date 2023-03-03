@@ -267,7 +267,7 @@ function addToEditorialBoard($connection, $contributorId)
 /**
  * Remove the contributor from the Editorial Board.
  */
-function removeEditorialBoard($connection, $contributorId)
+function removeFromEditorialBoard($connection, $contributorId)
 {
 
 }
