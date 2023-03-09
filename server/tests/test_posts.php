@@ -48,4 +48,6 @@ function test_removePost_invalidId()
 {
 }
 
+include '../utils/test_runner.php';
+
 ?>

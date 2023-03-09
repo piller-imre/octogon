@@ -84,4 +84,6 @@ function test_removeAuthorship_invalidId()
 {
 }
 
+include '../utils/test_runner.php';
+
 ?>

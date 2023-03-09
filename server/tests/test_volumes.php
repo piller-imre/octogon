@@ -88,4 +88,6 @@ function test_removeVolume_inUse()
 {
 }
 
+include '../utils/test_runner.php';
+
 ?>

@@ -2,7 +2,8 @@
 
 function test_createArticleType_successful()
 {
-
+    $x = 10;
+    assert($x == 4);
 }
 
 function test_createArticleType_missing_name()
@@ -53,5 +54,7 @@ function test_removeArticleType_successful()
 function test_removeArticleType_inUse()
 {
 }
+
+include '../utils/test_runner.php';
 
 ?>
