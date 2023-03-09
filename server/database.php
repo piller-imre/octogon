@@ -1,25 +1,32 @@
 <?php
 namespace db;
 
-include 'config.php';
+// include 'config.php';
+
+// https://www.php.net/manual/en/sqlite3.open.php
+
+class OctogonDb extends \SQLite3
+{
+    function __construct($name = null) {
+        if ($name == null) {
+            $this->open('octogon.db');
+        } else if ($name == 'empty') {
+            $this->open('../empty.db');
+        } else if ($name == 'demo') {
+            $this->open('../demo.db');
+        } else {
+            throw new InvalidArgumentException('The database name "'.$name.'" is invalid!');
+        }
+    }
+}
 
 /**
- * Open a new database connection.
- * 
- * @return a database connection object
+ * Connect to the database.
  */
-function openDbConnection()
+function connect($name = null)
 {
-    $connection = new \mysqli(
-        \Config::DB_HOST,
-        \Config::DB_USERNAME,
-        \Config::DB_PASSWORD,
-        \Config::DB_DATABASE
-    );
-    if ($connection->connect_error) {
-        die('Failed to connect to the DB: '.$connection->connect_error);
-    }
-    return $connection;
+    $conn = new OctogonDb($name);
+    return $conn;
 }
 
 /**

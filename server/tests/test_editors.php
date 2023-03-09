@@ -56,7 +56,7 @@ function test_moveEditorDown_onLast()
 {
 }
 
-include '../utils/test_runner.php';
+require '../utils/test_runner.php';
 
 ?>
 

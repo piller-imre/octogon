@@ -84,6 +84,6 @@ function test_removeContributor_inUse()
 {
 }
 
-include '../utils/test_runner.php';
+require '../utils/test_runner.php';
 
 ?>

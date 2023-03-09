@@ -96,6 +96,6 @@ function test_removeArticle_invalidId()
 {
 }
 
-include '../utils/test_runner.php';
+require '../utils/test_runner.php';
 
 ?>

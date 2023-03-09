@@ -32,6 +32,6 @@ function test_removeDocument_inUse()
 {
 }
 
-include '../utils/test_runner.php';
+require '../utils/test_runner.php';
 
 ?>

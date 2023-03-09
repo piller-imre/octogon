@@ -5,6 +5,7 @@ RUN apt update
 RUN apt install -y apache2
 RUN apt install -y php php-common
 RUN apt install -y libapache2-mod-php
+RUN apt install -y php7.4-sqlite3
 RUN apt install -y procps bash curl
 # RUN rm -rf /var/lib/apt/lists/*
 COPY files/start.sh .

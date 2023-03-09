@@ -20,7 +20,7 @@ function test_updatePageContent_missingContent()
 {
 }
 
-include '../utils/test_runner.php';
+require '../utils/test_runner.php';
 
 ?>
 

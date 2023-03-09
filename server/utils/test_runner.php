@@ -5,7 +5,9 @@ div.test-cases {
 }
 
 div.test-cases div.successful,
-div.test-cases div.failed {
+div.test-cases div.failed,
+div.test-cases div.error
+{
     padding: 12px;
     margin-bottom: 12px;
     border-radius: 5px;
@@ -18,6 +20,11 @@ div.test-cases div.successful {
 
 div.test-cases div.failed {
     background-color: #FFAA88;
+    border: solid #AA8844 1px;
+}
+
+div.test-cases div.error {
+    background-color: #EEAAEE;
     border: solid #AA8844 1px;
 }
 
@@ -88,6 +95,14 @@ function runAllTests()
             }
             catch (AssertionError $error) {
                 echo '<div class="failed">';
+                echo '<div class="test-name">'.$func_name.'</div>';
+                echo '<div class="message">'.$error->getMessage()."</div>";
+                showStackTrace($error);
+                echo "</div>";
+                $nFailed++;
+            }
+            catch (Exception $error) {
+                echo '<div class="error">';
                 echo '<div class="test-name">'.$func_name.'</div>';
                 echo '<div class="message">'.$error->getMessage()."</div>";
                 showStackTrace($error);
