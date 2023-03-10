@@ -8,6 +8,7 @@ RUN apt install -y libapache2-mod-php
 RUN apt install -y php7.4-sqlite3
 RUN apt install -y procps bash curl
 # RUN rm -rf /var/lib/apt/lists/*
+COPY files/php.ini /etc/php/7.4/apache2
 COPY files/start.sh .
 COPY files/show_error_log.sh .
 ENTRYPOINT ["/bin/bash", "start.sh"]
