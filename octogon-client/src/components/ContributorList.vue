@@ -10,10 +10,10 @@
         <router-link :to="{name: 'ContributorData'}" tag="button">Create new contributor</router-link>
       </div>
       <div>
-        <div v-for="contributor in contributors" v-bind:key="contributor.id">
-          {{ contributor.firstName }} {{ contributor.familyName }}
-          <router-link :to="{name: 'ContributorData'}">Edit</router-link>
-          <a href="#" @click="removeContributor(contributor.id)">Remove</a>
+        <div v-for="contributor in contributors" v-bind:key="contributor.id" class="list-item">
+          <span>{{ contributor.firstName }} {{ contributor.familyName }}</span>
+          <span><router-link :to="{name: 'ContributorData'}">Edit</router-link></span>
+          <span><a href="#" @click="removeContributor(contributor.id)">Remove</a></span>
         </div>
       </div>
     </div>

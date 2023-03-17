@@ -4,15 +4,25 @@
     <div class="article-volume">
     Volume {{ article.volume.volume }}, Number {{ article.volume.number }}, Year {{ article.volume.year }}
     </div>
+    <div>
+      <span class="field-name">Type</span>
+      <select v-model="article.type">
+        <option disabled value="">-</option>
+        <option v-for="articleType in articleTypes" v-bind:key="articleType">{{ articleType }}</option>
+      </select>
+    </div>
     <div class="input-field">
       <span class="field-name">Title</span>
       <input type="text" v-model="article.title" placeholder="title" />
     </div>
     <div class="input-field">
-      <span class="field-name">Abstract</span>
-      <input type="text" v-model="article.abstract" placeholder="abstract" />
+      <!-- <span class="field-name">Abstract</span> -->
+      <textarea v-model="article.abstract" placeholder="abstract"></textarea>
     </div>
     <button @click="renderAbstract">Render abstract</button>
+    <div class="article-volume">
+        Rendered LaTeX here!
+    </div>
     <div class="error-message">
       {{ errorMessage }}
     </div>
@@ -30,6 +40,7 @@ export default {
     return {
       article: {
         id: 1,
+        type: "",
         volume: {
           id: 1,
           volume: 1,
@@ -39,6 +50,11 @@ export default {
         title: "",
         abstract: ""
       },
+      articleTypes: [
+        "research",
+        "competition",
+        "solution"
+      ],
       errorMessage: "Possible error message"
     }
   },

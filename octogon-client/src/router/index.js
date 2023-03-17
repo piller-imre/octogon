@@ -1,25 +1,27 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+// TODO: Remove from the production version!
+import Home from '@/components/Home'
+
 import Login from '@/components/Login'
 
-import Archive from '@/components/public/Archive'
-import Contacts from '@/components/public/Contacts'
-import EditorialBoard from '@/components/public/EditorialBoard'
-import Home from '@/components/public/Home'
-import Rules from '@/components/public/Rules'
-
-import ArticleData from '@/components/admin/ArticleData'
-import ArticleTitleData from '@/components/admin/ArticleTitleData'
-import ArticleTypeData from '@/components/admin/ArticleTypeData'
-import ArticleTypeList from '@/components/admin/ArticleTypeList'
-import AuthorshipData from '@/components/admin/AuthorshipData'
-import ContributorData from '@/components/admin/ContributorData'
-import ContributorList from '@/components/admin/ContributorList'
-import EditorialBoardData from '@/components/admin/EditorialBoardData'
-import VolumeContent from '@/components/admin/VolumeContent'
-import VolumeData from '@/components/admin/VolumeData'
-import VolumeList from '@/components/admin/VolumeList'
+import VolumeContent from '@/components/VolumeContent'
+import VolumeData from '@/components/VolumeData'
+import VolumeList from '@/components/VolumeList'
+import ArticleData from '@/components/ArticleData'
+import ArticleTitleData from '@/components/ArticleTitleData'
+import ArticleTypeData from '@/components/ArticleTypeData'
+import ArticleTypeList from '@/components/ArticleTypeList'
+import AuthorshipData from '@/components/AuthorshipData'
+import ContributorData from '@/components/ContributorData'
+import ContributorList from '@/components/ContributorList'
+import EditorialBoardData from '@/components/EditorialBoardData'
+import PostData from '@/components/PostData'
+import PostList from '@/components/PostList'
+import RuleData from '@/components/RuleData'
+import ContactData from '@/components/ContactData'
+import FileList from '@/components/FileList'
 
 Vue.use(Router)
 
@@ -30,33 +32,51 @@ export default new Router({
       name: 'Login',
       component: Login
     },
-    // public pages
+    {
+      path: '/volume-content',
+      name: 'VolumeContent',
+      component: VolumeContent
+    },
+    {
+      path: '/volume-data',
+      name: 'VolumeData',
+      component: VolumeData
+    },
+    {
+      path: '/volume-list',
+      name: 'VolumeList',
+      component: VolumeList
+    },
     {
       path: '/home',
       name: 'Home',
       component: Home
     },
     {
-      path: '/archive',
-      name: 'Archive',
-      component: Archive
+      path: '/post-data',
+      name: 'PostData',
+      component: PostData
     },
     {
-      path: '/rules',
-      name: 'Rules',
-      component: Rules
+      path: '/post-list',
+      name: 'PostList',
+      component: PostList
     },
     {
-      path: '/editorial-board',
-      name: 'EditorialBoard',
-      component: EditorialBoard
+      path: '/rule-data',
+      name: 'RuleData',
+      component: RuleData
     },
     {
-      path: '/contacts',
-      name: 'Contacts',
-      component: Contacts
+      path: '/contact-data',
+      name: 'ContactData',
+      component: ContactData
     },
-    // admin pages
+    {
+      path: '/file-list',
+      name: 'FileList',
+      component: FileList
+    },
     {
       path: '/article-data',
       name: 'ArticleData',
@@ -97,21 +117,6 @@ export default new Router({
       name: 'EditorialBoardData',
       component: EditorialBoardData
     },
-    {
-      path: '/volume-content',
-      name: 'VolumeContent',
-      component: VolumeContent
-    },
-    {
-      path: '/volume-data',
-      name: 'VolumeData',
-      component: VolumeData
-    },
-    {
-      path: '/volume-list',
-      name: 'VolumeList',
-      component: VolumeList
-    }
   ]
 })
 

@@ -1,11 +1,21 @@
 <template>
   <div>
-    Login
-    <input type="text" v-model="user.email" placeholder="email" />
-    <input type="password" v-model="user.password" placeholder="password" />
-    <button v-on:click="login">Sign in</button>
+    <h1>Login</h1>
     <div>
+      <div class="input-field">
+        <span class="field-name">E-mail</span>
+        <input type="text" v-model="user.email" placeholder="email" />
+      </div>
+      <div class="input-field">
+        <span class="field-name">Password</span>
+        <input type="password" v-model="user.password" placeholder="password" />
+      </div>
+    </div>
+    <div class="error-message">
       {{ errorMessage }}
+    </div>
+    <div>
+      <button v-on:click="login">Sign in</button>
     </div>
   </div>
 </template>
@@ -32,4 +42,3 @@ export default {
 
 <style>
 </style>
-

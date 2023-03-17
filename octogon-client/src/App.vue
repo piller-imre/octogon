@@ -6,19 +6,31 @@
     <div class="side-menu">
       <!-- TODO: Use the div as the link! -->
       <div class="menu-item">
-        <router-link :to="{name: 'Home'}">Home</router-link>
+        <router-link :to="{name: 'Home'}">Home (testing)</router-link>
       </div>
       <div class="menu-item">
-        <router-link :to="{name: 'Archive'}">Archive</router-link>
+        <router-link :to="{name: 'VolumeList'}">Volumes</router-link>
       </div>
       <div class="menu-item">
-        <router-link :to="{name: 'Rules'}">Rules</router-link>
+        <router-link :to="{name: 'ContributorList'}">Contributors</router-link>
       </div>
       <div class="menu-item">
-        <router-link :to="{name: 'EditorialBoard'}">Editorial Board</router-link>
+        <router-link :to="{name: 'EditorialBoardData'}">Editorial Board</router-link>
       </div>
       <div class="menu-item">
-        <router-link :to="{name: 'Contacts'}">Contacts</router-link>
+        <router-link :to="{name: 'ArticleTypeList'}">Article Types</router-link>
+      </div>
+      <div class="menu-item">
+        <router-link :to="{name: 'PostList'}">Posts</router-link>
+      </div>
+      <div class="menu-item">
+        <router-link :to="{name: 'FileList'}">Files</router-link>
+      </div>
+      <div class="menu-item">
+        <router-link :to="{name: 'RuleData'}">Rules</router-link>
+      </div>
+      <div class="menu-item">
+        <router-link :to="{name: 'ContactData'}">Contact</router-link>
       </div>
     </div>
     <div class="content">
@@ -29,25 +41,7 @@
 
 <script>
 export default {
-  name: 'App',
-  methods: {
-    isAdmin() {
-      let adminPages = [
-        'ProductListRoot',
-        'ProductList',
-        'EditProduct',
-        'NewMainCategory',
-        'NewSubCategory',
-        'NewProduct'
-      ];
-      if (adminPages.includes(this.$route.name)) {
-        return true;
-      }
-      else {
-        return false;
-      }
-    }
-  }
+  name: 'App'
 }
 </script>
 
@@ -116,10 +110,47 @@ button:hover {
   background-color: #BB8282;
 }
 
+select {
+  background-color: #994545;
+  color: white;
+  border: solid black 1px;
+  padding: 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
 input {
   background-color: #FFF0F0;
   border: solid #BB8282 1px;
   padding: 10px;
+}
+
+textarea {
+  width: 97%;
+  background-color: #FFF0F0;
+  border: solid #BB8282 1px;
+  padding: 10px;
+}
+
+div.list-item {
+  padding: 10px;
+  background-color: #FFF8F8;
+  margin-bottom: 12px;
+  border: solid #CCCCCC 1px; 
+}
+
+div.list-item span:nth-child(1) {
+  display: inline-block;
+  width: 555px;
+}
+
+div.list-item span:nth-child(2) {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+div.list-item span:nth-child(3) {
+  display: inline-block;
 }
 
 div.article-title {

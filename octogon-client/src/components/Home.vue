@@ -1,8 +1,20 @@
 <template>
   <div>
-    <h1>Home</h1>
+    <h1>Home (testing)</h1>
     <div>
       <ul>
+        <li>
+          <router-link :to="{name: 'Login'}">Login</router-link>
+        </li>
+        <li>
+          <router-link :to="{name: 'VolumeContent'}">Volume Content</router-link>
+        </li>
+        <li>
+          <router-link :to="{name: 'VolumeData'}">Volume Data</router-link>
+        </li>
+        <li>
+          <router-link :to="{name: 'VolumeList'}">Volume List</router-link>
+        </li>
         <li>
           <router-link :to="{name: 'ArticleData'}">Article Data</router-link>
         </li>
@@ -28,13 +40,19 @@
           <router-link :to="{name: 'EditorialBoardData'}">Editorial Board Data</router-link>
         </li>
         <li>
-          <router-link :to="{name: 'VolumeContent'}">Volume Content</router-link>
+          <router-link :to="{name: 'PostData'}">PostData</router-link>
         </li>
         <li>
-          <router-link :to="{name: 'VolumeData'}">Volume Data</router-link>
+          <router-link :to="{name: 'PostList'}">PostList</router-link>
         </li>
         <li>
-          <router-link :to="{name: 'VolumeList'}">Volume List</router-link>
+          <router-link :to="{name: 'FileList'}">FileList</router-link>
+        </li>
+        <li>
+          <router-link :to="{name: 'RuleData'}">RuleData</router-link>
+        </li>
+        <li>
+          <router-link :to="{name: 'ContactData'}">ContactData</router-link>
         </li>
       </ul>
     </div>

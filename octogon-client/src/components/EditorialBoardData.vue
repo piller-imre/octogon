@@ -7,21 +7,21 @@
         <button @click="findContributors">Find</button>
       </div>
       <div>
-        <div v-for="contributor in contributors" v-bind:key="contributor.id">
-          {{ contributor.firstName }} {{ contributor.familyName }}
-          <a href="#" @click="addContributor(contributor.id)">Add</a>
+        <div v-for="contributor in contributors" v-bind:key="contributor.id" class="list-item">
+          <span>{{ contributor.firstName }} {{ contributor.familyName }}</span>
+          <span><a href="#" @click="addContributor(contributor.id)">Add</a></span>
         </div>
       </div>
       <div>
         <router-link :to="{name: 'ContributorData'}" tag="button">Create new contributor</router-link>
       </div>
       <div>
-        <div v-for="editor in editorialBoard" v-bind:key="editor.id">
-          {{ editor.firstName }} {{ editor.familyName }}
-          <router-link :to="{name: 'ContributorData'}">Edit</router-link>
-          <a href="#" @click="removeEditor(editor.id)">Remove</a>
-          <a href="#" @click="moveEditorUp(editor.id)">Up</a>
-          <a href="#" @click="moveEditorDown(editor.id)">Down</a>
+        <div v-for="editor in editorialBoard" v-bind:key="editor.id" class="editorial-board-item">
+          <span class="editor-name">{{ editor.firstName }} {{ editor.familyName }}</span>
+          <span class="editor-item-action"><router-link :to="{name: 'ContributorData'}">Edit</router-link></span>
+          <span class="editor-item-action"><a href="#" @click="removeEditor(editor.id)">Remove</a></span>
+          <span class="editor-item-action"><a href="#" @click="moveEditorUp(editor.id)">Up</a></span>
+          <span class="editor-item-action"><a href="#" @click="moveEditorDown(editor.id)">Down</a></span>
         </div>
       </div>
     </div>
@@ -91,5 +91,22 @@ export default {
 </script>
 
 <style>
+div.editorial-board-item {
+  padding: 10px;
+  background-color: #FFF8F8;
+  margin-bottom: 12px;
+  border: solid #CCCCCC 1px; 
+}
+
+span.editor-name {
+  display: inline-block;
+  width: 450px;
+}
+
+span.editor-item-action {
+  display: inline-block;
+  padding-left: 10px;
+  padding-right: 10px;
+}
 </style>
 

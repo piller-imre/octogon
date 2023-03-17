@@ -6,6 +6,10 @@
       {{ article.title }}
     </div>
     <div>
+      <input type="text" v-model="filterExpression" placeholder="filter expression" />
+      <button @click="findContributors">Find</button>
+    </div>
+    <div>
       <div v-for="contributor in contributors" v-bind:key="contributor.id" class="contributor-item">
         <span>{{ contributor.firstName }} {{ contributor.familyName }}</span>
         <span><a href="#" @click="selectContributor(contributor.id)">Select</a></span>
@@ -78,6 +82,9 @@ export default {
     }
   },
   methods: {
+    findContributors() {
+      console.log("Find contributors ...");
+    },
     selectContributor(contributorId) {
       console.log("Select contributor " + contributorId);
     },

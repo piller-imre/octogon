@@ -5,6 +5,9 @@
     <div class="article-volume">
       Volume {{ article.volume.volume }}, Number {{ article.volume.number }}, Year {{ article.volume.year }}
     </div>
+    <div>
+      Type: {{ article.type }}
+    </div>
     <div class="article-title">
       {{ article.title }}
     </div>
@@ -60,6 +63,7 @@ export default {
   data() {
     return {
       article: {
+        type: "research",
         volume: {
           id: 1,
           volume: 1,
