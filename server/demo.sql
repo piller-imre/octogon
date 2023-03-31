@@ -50,7 +50,8 @@ VALUES
 (5, 3, 'Proposed problems', 'Many problems', 1, 35, 40, 2),
 (6, 1, 'First in second volume', 'Nothing special', 2, 1, 12, NULL),
 (7, 1, 'Second in second volume', 'Still nothing special', 2, 13, 19, NULL),
-(8, 3, 'Proposed problems', 'Exciting problems', 2, 20, 33, 4);
+(8, 3, 'Proposed problems', 'Exciting problems', 2, 20, 33, 4),
+(9, 1, 'A new one', 'Without authors', 3, 1, 50, NULL);
 
 INSERT INTO authorships
 (id, article_id, contributor_id, indx, given_name, family_name, affiliation, email)

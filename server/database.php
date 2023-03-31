@@ -248,6 +248,20 @@ function updateAuthorship($connection, $authorshipId, $authorship)
 }
 
 /**
+ * Move the authorship up.
+ */
+function moveAuthorshipUp($connection, $authorshipId)
+{
+}
+
+/**
+ * Move the authorship down.
+ */
+function moveAuthorshipDown($connection, $authorshipId)
+{
+}
+
+/**
  * Remove the authorship.
  */
 function removeAuthorship($connection, $authorshipId)

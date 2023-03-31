@@ -1,5 +1,7 @@
 <?php
 
+require '../database.php';
+
 function test_createVolume_successful()
 {
 }

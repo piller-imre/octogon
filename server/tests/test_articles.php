@@ -1,5 +1,7 @@
 <?php
 
+require '../database.php';
+
 function test_createArticle_successful()
 {
 }
