@@ -410,26 +410,100 @@ function test_updateAuthorship_invalidEmail()
 
 function test_moveAuthorshipUp_successful()
 {
+    $connection = db\connect('demo');
+    db\moveAuthorshipUp($connection, 9);
+    $authorships = db\collectAuthorshipsByArticleId($connection, 6);
+    assert(3 === count($authorships));
+    assert(7 === $authorships[0]['id']);
+    assert('Péter' === $authorships[0]['given_name']);
+    assert('Körtesi' === $authorships[0]['family_name']);
+    assert(9 === $authorships[1]['id']);
+    assert('Ovidiu T.' === $authorships[1]['given_name']);
+    assert('Pop' === $authorships[1]['family_name']);
+    assert(8 === $authorships[2]['id']);
+    assert('Mihály' === $authorships[2]['given_name']);
+    assert('Bencze' === $authorships[2]['family_name']);
 }
 
 function test_moveAuthorshipUp_first()
 {
+    $connection = db\connect('demo');
+    db\moveAuthorshipUp($connection, 7);
+    $authorships = db\collectAuthorshipsByArticleId($connection, 6);
+    assert(3 === count($authorships));
+    assert(7 === $authorships[0]['id']);
+    assert('Péter' === $authorships[0]['given_name']);
+    assert('Körtesi' === $authorships[0]['family_name']);
+    assert(8 === $authorships[1]['id']);
+    assert('Mihály' === $authorships[1]['given_name']);
+    assert('Bencze' === $authorships[1]['family_name']);
+    assert(9 === $authorships[2]['id']);
+    assert('Ovidiu T.' === $authorships[2]['given_name']);
+    assert('Pop' === $authorships[2]['family_name']);
 }
 
 function test_moveAuthorshipUp_invalidId()
 {
+    $connection = db\connect('demo');
+    try {
+        $_ = db\moveAuthorshipUp($connection, 70);
+        assert(false, 'Exception has not raised!');
+    }
+    catch (ValueError $error) {
+        assert('The authorship ID (70) is missing!' === $error->getMessage());
+    }
+    catch (Exception $error) {
+        assert(false, 'Invalid exception type!');
+    }
 }
 
 function test_moveAuthorshipDown_successful()
 {
+    $connection = db\connect('demo');
+    db\moveAuthorshipUp($connection, 7);
+    $authorships = db\collectAuthorshipsByArticleId($connection, 6);
+    assert(3 === count($authorships));
+    assert(8 === $authorships[0]['id']);
+    assert('Mihály' === $authorships[0]['given_name']);
+    assert('Bencze' === $authorships[0]['family_name']);
+    assert(7 === $authorships[1]['id']);
+    assert('Péter' === $authorships[1]['given_name']);
+    assert('Körtesi' === $authorships[1]['family_name']);
+    assert(9 === $authorships[2]['id']);
+    assert('Ovidiu T.' === $authorships[2]['given_name']);
+    assert('Pop' === $authorships[2]['family_name']);
 }
 
 function test_moveAuthorshipDown_last()
 {
+    $connection = db\connect('demo');
+    db\moveAuthorshipUp($connection, 9);
+    $authorships = db\collectAuthorshipsByArticleId($connection, 6);
+    assert(3 === count($authorships));
+    assert(7 === $authorships[0]['id']);
+    assert('Péter' === $authorships[0]['given_name']);
+    assert('Körtesi' === $authorships[0]['family_name']);
+    assert(8 === $authorships[1]['id']);
+    assert('Mihály' === $authorships[1]['given_name']);
+    assert('Bencze' === $authorships[1]['family_name']);
+    assert(9 === $authorships[2]['id']);
+    assert('Ovidiu T.' === $authorships[2]['given_name']);
+    assert('Pop' === $authorships[2]['family_name']);
 }
 
 function test_moveAuthorshipDown_invalidId()
 {
+    $connection = db\connect('demo');
+    try {
+        $_ = db\moveAuthorshipDown($connection, 80);
+        assert(false, 'Exception has not raised!');
+    }
+    catch (ValueError $error) {
+        assert('The authorship ID (80) is missing!' === $error->getMessage());
+    }
+    catch (Exception $error) {
+        assert(false, 'Invalid exception type!');
+    }
 }
 
 function test_removeAuthorship_successful()
