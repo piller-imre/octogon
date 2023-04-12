@@ -938,6 +938,279 @@ paths:
           description: Unauthenticated
         'default':
           description: Unexpected error
+  /contributors/collect:
+    post:
+      description: Collect the contributors.
+      operationId: collectContributors
+      tags:
+      - contributors
+      parameters:
+      - name: filter
+        in: query
+        description: Part of the name or e-mail address for filtering
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json: {}
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contributor'
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /contributors/get:
+    post:
+      description: Get a contributor.
+      operationId: getContributor
+      tags:
+        - contributors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contributor'
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /contributors/create:
+    post:
+      description: Create a new contributor.
+      operationId: createContributor
+      tags:
+        - contributors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContributorData'
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /contributors/update:
+    post:
+      description: Update a contributor.
+      operationId: updateContributor
+      tags:
+        - contributors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Contributor'
+      responses:
+        '200':
+          description: Successful
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /contributors/remove:
+    post:
+      description: Remove a contributor
+      operationId: removeContributor
+      tags:
+        - contributors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+      responses:
+        '200':
+          description: Successful
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /authorships/create:
+    post:
+      description: Create a new authorship.
+      operationId: createAuthorship
+      tags:
+      - authorships
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorshipData'
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /authorships/collect:
+    post:
+      description: Collect the authors of the given article.
+      operationId: collectAuthorships
+      tags:
+      - authorships
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                articleId:
+                  type: integer
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Authorship'
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /authorships/update:
+    post:
+      description: Update the authorship data.
+      operationId: updateAuthorship
+      tags:
+      - authorships
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Authorship'
+      responses:
+        '200':
+          description: Successful
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /authorships/move-up:
+    post:
+      description: Move the authors up in the list of authors
+      operationId: moveUpAuthorship
+      tags:
+      - authorships
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+      responses:
+        '200':
+          description: Successful
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /authorships/move-down:
+    post:
+      description: Move the authors down in the list of authors
+      operationId: moveDownAuthorship
+      tags:
+      - authorships
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+      responses:
+        '200':
+          description: Successful
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /authorships/remove:
+    post:
+      description: Remove the authorship.
+      operationId: removeAuthorship
+      tags:
+      - authorships
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+      responses:
+        '200':
+          description: Successful
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
 components:
   schemas:
     Credential:
@@ -988,6 +1261,17 @@ components:
           type: string
         email:
           type: string
+    ContributorData:
+      type: object
+      properties:
+        firstName:
+          type: string
+        familyName:
+          type: string
+        affiliation:
+          type: string
+        email:
+          type: string
     ArticleType:
       type: object
       properties:
@@ -996,4 +1280,36 @@ components:
         name:
           type: string
         description:
+          type: string
+    Authorship:
+      type: object
+      properties:
+        id:
+          type: integer
+        articleId:
+          type: integer
+        contributorId:
+          type: integer
+        givenName:
+          type: string
+        familyName:
+          type: string
+        affiliation:
+          type: string
+        email:
+          type: string
+    AuthorshipData:
+      type: object
+      properties:
+        articleId:
+          type: integer
+        contributorId:
+          type: integer
+        givenName:
+          type: string
+        familyName:
+          type: string
+        affiliation:
+          type: string
+        email:
           type: string
