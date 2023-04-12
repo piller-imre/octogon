@@ -62,8 +62,6 @@ paths:
                           format: date
         '400':
           description: Invalid request
-        '401':
-          description: Unauthenticated
         'default':
           description: Unexpected error
   /posts/get:
@@ -95,8 +93,6 @@ paths:
                     format: date
         '400':
           description: Invalid request
-        '401':
-          description: Unauthenticated
         'default':
           description: Unexpected error
   /posts/create:
@@ -252,8 +248,6 @@ paths:
                     type: string
         '400':
           description: Invalid request
-        '401':
-          description: Unauthenticated
         'default':
           description: Unexpected error
   /contacts/update:
@@ -291,11 +285,7 @@ paths:
             schema:
               type: object
               properties:
-                orderId:
-                  type: integer
-                userId:
-                  type: integer
-                fileName:
+                file:
                   type: string
                   format: binary
       responses:
@@ -787,8 +777,6 @@ paths:
                           type: integer
         '400':
           description: Invalid request
-        '401':
-          description: Unauthenticated
         'default':
           description: Unexpected error
   /articles/get:
@@ -860,8 +848,6 @@ paths:
                         type: integer
         '400':
           description: Invalid request
-        '401':
-          description: Unauthenticated
         'default':
           description: Unexpected error
   /articles/create:
@@ -1400,7 +1386,7 @@ components:
       properties:
         id:
           type: integer
-        firstName:
+        givenName:
           type: string
         familyName:
           type: string
@@ -1411,7 +1397,7 @@ components:
     ContributorData:
       type: object
       properties:
-        firstName:
+        givenName:
           type: string
         familyName:
           type: string
