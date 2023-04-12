@@ -367,6 +367,41 @@ paths:
           description: Unauthenticated
         'default':
           description: Unexpected error
+  /volumes/show:
+    post:
+      description: Show the volumes on the Archive page.
+      operationId: showVolumes
+      tags:
+      - volumes
+      requestBody:
+        content:
+          application/json: {}
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    volume:
+                      type: integer
+                    number:
+                      type: integer
+                    year:
+                      type: integer
+                    month:
+                      type: integer
+                    coverImageUrl:
+                      type: string
+        '400':
+          description: Invalid request
+        'default':
+          description: Unexpected error
   /volumes/get:
     post:
       description: Get volume data.
@@ -944,16 +979,14 @@ paths:
       operationId: collectContributors
       tags:
       - contributors
-      parameters:
-      - name: filter
-        in: query
-        description: Part of the name or e-mail address for filtering
-        required: false
-        schema:
-          type: string
       requestBody:
         content:
-          application/json: {}
+          application/json:
+            schema:
+              type: object
+              properties:
+                filter:
+                  type: string
       responses:
         '200':
           description: Successful
@@ -1194,6 +1227,120 @@ paths:
       operationId: removeAuthorship
       tags:
       - authorships
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+      responses:
+        '200':
+          description: Successful
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /editors/collect:
+    post:
+      description: Collect the editors.
+      operationId: collectEditors
+      tags:
+      - editors
+      requestBody:
+        content:
+          application/json: {}
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contributor'
+        '400':
+          description: Invalid request
+        'default':
+          description: Unexpected error
+  /editors/add:
+    post:
+      description: Add the contributor to the Editorial Board.
+      operationId: addEditor
+      tags:
+      - editors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+      responses:
+        '200':
+          description: Successful
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /editors/move-up:
+    post:
+      description: Move the editor up in the Editorial Board.
+      operationId: moveUpEditor
+      tags:
+      - editors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+      responses:
+        '200':
+          description: Successful
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /editors/move-down:
+    post:
+      description: Move the editor down in the Editorial Board.
+      operationId: moveDownEditor
+      tags:
+      - editors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+      responses:
+        '200':
+          description: Successful
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthenticated
+        'default':
+          description: Unexpected error
+  /editors/remove:
+    post:
+      description: Remove the contributor from the Editorial Board.
+      operationId: removeEditor
+      tags:
+      - editors
       requestBody:
         content:
           application/json:
