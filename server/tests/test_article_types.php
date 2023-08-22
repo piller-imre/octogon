@@ -27,7 +27,7 @@ function test_createArticleType_missing_name()
         $_ = db\createArticleType($connection, $articleType);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The article type name is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -54,7 +54,7 @@ function test_createArticleType_existing_name()
         $_ = db\createArticleType($connection, $furtherArticleType);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The article type name "competition 2" is already exists!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -81,7 +81,7 @@ function test_collectArticleTypes_multiple()
         assert($i === $typeId);
     }
     $articleTypes = db\collectArticleTypes($connection);
-    assert(length($articleTypes) == 3);
+    assert(count($articleTypes) == 3);
     for ($i = 1; $i <= 3; $i++) {
         assert('competition '.$i === $articleTypes[$i - 1]['name']);
         assert('Mathematical competition' === $articleTypes[$i - 1]['description']);
@@ -100,7 +100,7 @@ function test_getArticleTypeById_successful()
         assert($i === $typeId);
     }
     for ($i = 1; $i <= 3; $i++) {
-        $retrieved = db\getArticleTypeById($connection, $typeId);
+        $retrieved = db\getArticleTypeById($connection, $i);
         assert('competition '.$i === $retrieved['name']);
     }
 }
@@ -120,7 +120,7 @@ function test_getArticleTypeById_invalid()
         $retrieved = db\getArticleTypeById($connection, 5);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The article type ID (5) is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -166,7 +166,7 @@ function test_updateArticleType_invalidId()
         db\updateArticleType($connection, 8, $modifiedArticleType);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The article type ID (8) is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -186,14 +186,14 @@ function test_updateArticleType_missingName()
         assert($i === $typeId);
     }
     $modifiedArticleType = array(
-        'name' => 'solutions',
+        'name' => '',
         'description' => 'Solutions'
     );
     try {
         db\updateArticleType($connection, 8, $modifiedArticleType);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The article type name is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -220,7 +220,7 @@ function test_updateArticleType_existingName()
         $_ = db\updateArticleType($connection, 3, $modifiedArticleType);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The article type name "competition 2" is already exists!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -241,7 +241,7 @@ function test_removeArticleType_successful()
     }
     db\removeArticleType($connection, 1);
     $articleTypes = db\collectArticleTypes($connection);
-    assert(2 === length($articleTypes));
+    assert(2 === count($articleTypes));
     assert('competition 2' === $articleTypes[0]['name']);
     assert('competition 3' === $articleTypes[1]['name']);
 }
@@ -262,23 +262,8 @@ function test_removeArticleType_invalidId()
         $_ = db\removeArticleType($connection, 1);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The article type ID (1) is missing!' === $error->getMessage());
-    }
-    catch (Exception $error) {
-        assert(false, 'Invalid exception type!');
-    }
-}
-
-function test_removeArticleType_inUse()
-{
-    $connection = db\connect('empty');
-    try {
-        $_ = db\removeArticleType($connection, 3);
-        assert(false, 'Exception has not raised!');
-    }
-    catch (ValueError $error) {
-        assert('The article type ID (3) is in use!' === $error->getMessage());
     }
     catch (Exception $error) {
         assert(false, 'Invalid exception type!');

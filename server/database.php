@@ -5,14 +5,18 @@ namespace db;
 
 // https://www.php.net/manual/en/sqlite3.open.php
 
+class ValueError extends \Exception {}
+
 class OctogonDb extends \SQLite3
 {
     function __construct($name = null) {
         if ($name == null) {
             $this->open('octogon.db');
         } else if ($name == 'empty') {
+            copy('../test_dbs/empty.db', '../empty.db');
             $this->open('../empty.db');
         } else if ($name == 'demo') {
+            copy('../test_dbs/demo.db', '../demo.db');
             $this->open('../demo.db');
         } else {
             throw new InvalidArgumentException('The database name "'.$name.'" is invalid!');
@@ -44,7 +48,23 @@ function isValidPassword($connection, $email, $password)
  */
 function createArticleType($connection, $articleType)
 {
-
+    if ($articleType['name'] == '') {
+        throw new ValueError('The article type name is missing!');
+    }
+    $sql = <<<SQL
+        INSERT INTO article_types (name, description)
+        VALUES (:name, :description)
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':name', $articleType['name'], SQLITE3_TEXT);
+    $stmt->bindParam(':description', $articleType['description'], SQLITE3_TEXT);
+    $stmt->execute();
+    if ($connection->lastErrorMsg() == 'UNIQUE constraint failed: article_types.name') {
+        throw new ValueError('The article type name "'.$articleType['name'].'" is already exists!');
+    }
+    $articleTypeId = $connection->lastInsertRowID();
+    $stmt->close();
+    return $articleTypeId;
 }
 
 /**
@@ -52,7 +72,20 @@ function createArticleType($connection, $articleType)
  */
 function collectArticleTypes($connection)
 {
-
+    $sql = <<<SQL
+        SELECT name, description
+        FROM article_types
+    SQL;
+    $result = $connection->query($sql);
+    $articleTypes = [];
+    while (($row = $result->fetchArray(SQLITE3_ASSOC))) {
+        $articleType = array(
+            'name' => $row['name'],
+            'description' => $row['description']
+        );
+        array_push($articleTypes, $articleType);
+    }
+    return $articleTypes;
 }
 
 /**
@@ -60,7 +93,19 @@ function collectArticleTypes($connection)
  */
 function getArticleTypeById($connection, $articleTypeId)
 {
-
+    $sql = <<<SQL
+        SELECT name, description
+        FROM article_types
+        WHERE id == :id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':id', $articleTypeId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    $articleType = $result->fetchArray(SQLITE3_ASSOC);
+    if ($articleType == false) {
+        throw new ValueError('The article type ID ('.$articleTypeId.') is missing!');
+    }
+    return $articleType;
 }
 
 /**
@@ -68,7 +113,25 @@ function getArticleTypeById($connection, $articleTypeId)
  */
 function updateArticleType($connection, $articleTypeId, $articleType)
 {
-
+    if ($articleType['name'] == '') {
+        throw new ValueError('The article type name is missing!');
+    }
+    $sql = <<<SQL
+        UPDATE article_types
+        SET name = :name, description = :description
+        WHERE id == :id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':name', $articleType['name'], SQLITE3_TEXT);
+    $stmt->bindParam(':description', $articleType['description'], SQLITE3_TEXT);
+    $stmt->bindParam(':id', $articleTypeId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    if ($connection->lastErrorMsg() == 'UNIQUE constraint failed: article_types.name') {
+        throw new ValueError('The article type name "'.$articleType['name'].'" is already exists!');
+    }
+    if ($connection->changes() != 1) {
+        throw new ValueError('The article type ID ('.$articleTypeId.') is missing!');
+    }
 }
 
 /**
@@ -76,7 +139,16 @@ function updateArticleType($connection, $articleTypeId, $articleType)
  */
 function removeArticleType($connection, $articleTypeId)
 {
-
+    $sql = <<<SQL
+        DELETE FROM article_types
+        WHERE id == :id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':id', $articleTypeId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    if ($connection->changes() != 1) {
+        throw new ValueError('The article type ID ('.$articleTypeId.') is missing!');
+    }
 }
 
 /**

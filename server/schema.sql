@@ -8,7 +8,7 @@ CREATE TABLE users (
 
 CREATE TABLE article_types (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
+    name TEXT UNIQUE NOT NULL,
     description TEXT NOT NULL DEFAULT ''
 );
 

@@ -50,6 +50,21 @@ function test_createArticle_invalidType()
     }
 }
 
+function test_removeArticleType_inUse()
+{
+    $connection = db\connect('empty');
+    try {
+        $_ = db\removeArticleType($connection, 3);
+        assert(false, 'Exception has not raised!');
+    }
+    catch (ValueError $error) {
+        assert('The article type ID (3) is in use!' === $error->getMessage());
+    }
+    catch (Exception $error) {
+        assert(false, 'Invalid exception type!');
+    }
+}
+
 function test_createArticle_missingTitle()
 {
     $connection = db\connect('demo');
