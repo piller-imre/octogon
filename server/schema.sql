@@ -24,7 +24,7 @@ CREATE TABLE volumes (
 
 CREATE TABLE documents (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
+    name TEXT UNIQUE NOT NULL,
     upload_date TEXT NOT NULL
 );
 

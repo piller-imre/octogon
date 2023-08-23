@@ -317,7 +317,23 @@ function removeVolume($connection, $volumeId)
  */
 function createDocument($connection, $document)
 {
-
+    if (trim($document['name']) == '') {
+        throw new ValueError('The name of the document is missing!');
+    }
+    $sql = <<<SQL
+        INSERT INTO documents (name, upload_date)
+        VALUES (:name, :upload_date)
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':name', $document['name'], SQLITE3_TEXT);
+    $stmt->bindParam(':upload_date', date('d-m-y h:i:s'), SQLITE3_TEXT);
+    $stmt->execute();
+    if ($connection->lastErrorMsg() == 'UNIQUE constraint failed: documents.name') {
+        throw new ValueError('The document "'.$document['name'].'" is already exists!');
+    }
+    $documentId = $connection->lastInsertRowID();
+    $stmt->close();
+    return $documentId;
 }
 
 /**
@@ -325,7 +341,21 @@ function createDocument($connection, $document)
  */
 function collectDocuments($connection)
 {
-
+    $sql = <<<SQL
+        SELECT id, name, upload_date
+        FROM documents
+    SQL;
+    $result = $connection->query($sql);
+    $documents = [];
+    while (($row = $result->fetchArray(SQLITE3_ASSOC))) {
+        $document = array(
+            'id' => $row['id'],
+            'name' => $row['name'],
+            'upload_date' => $row['upload_date']
+        );
+        array_push($documents, $document);
+    }
+    return $documents;
 }
 
 /**
@@ -333,7 +363,28 @@ function collectDocuments($connection)
  */
 function removeDocument($connection, $documentId)
 {
-
+    $sql = <<<SQL
+        SELECT count(id)
+        FROM articles
+        WHERE document_id == :document_id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':document_id', $documentId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    $row = $result->fetchArray(SQLITE3_ASSOC);
+    if ($row['count(id)'] > 0) {
+        throw new ValueError('The document ID ('.$documentId.') is in use!');
+    }
+    $sql = <<<SQL
+        DELETE FROM documents
+        WHERE id == :id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':id', $documentId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    if ($connection->changes() != 1) {
+        throw new ValueError('The document ID ('.$documentId.') is missing!');
+    }
 }
 
 /**
