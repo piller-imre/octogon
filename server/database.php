@@ -388,11 +388,122 @@ function removeDocument($connection, $documentId)
 }
 
 /**
+ * Check the article type id.
+ */
+function checkArticleTypeId($connection, $articleTypeId)
+{
+    $sql = <<<SQL
+        SELECT count(id)
+        FROM article_types
+        WHERE id == :id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':id', $articleTypeId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    $row = $result->fetchArray(SQLITE3_ASSOC);
+    if ($row['count(id)'] != 1) {
+        throw new ValueError('The article type ID ('.$articleTypeId.') is missing!');
+    }
+}
+
+/**
+ * Check the volume id.
+ */
+function checkVolumeId($connection, $volumeId)
+{
+    $sql = <<<SQL
+        SELECT count(id)
+        FROM volumes
+        WHERE id == :id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':id', $volumeId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    $row = $result->fetchArray(SQLITE3_ASSOC);
+    if ($row['count(id)'] != 1) {
+        throw new ValueError('The volume ID ('.$volumeId.') is missing!');
+    }
+}
+
+/**
+ * Check the document id.
+ */
+function checkDocumentId($connection, $documentId)
+{
+    $sql = <<<SQL
+        SELECT count(id)
+        FROM documents
+        WHERE id == :id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':id', $documentId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    $row = $result->fetchArray(SQLITE3_ASSOC);
+    if ($row['count(id)'] != 1) {
+        throw new ValueError('The document ID ('.$documentId.') is missing!');
+    }
+}
+
+/**
+ * Check the data of the article.
+ */
+function checkArticleData($connection, $article)
+{
+    if (trim($article['title']) == '') {
+        throw new ValueError('The title of the article is missing!');
+    }
+    if ($article['first_page'] < 1) {
+        throw new ValueError('The first page of the article ('.$article['first_page'].') is invalid!');
+    }
+    if ($article['last_page'] < 1) {
+        throw new ValueError('The last page of the article ('.$article['last_page'].') is invalid!');
+    }
+    if ($article['last_page'] < $article['first_page']) {
+        throw new ValueError('The page interval (from '.$article['first_page'].' to '.$article['last_page'].') is invalid!');
+    }
+    checkArticleTypeId($connection, $article['article_type_id']);
+    checkVolumeId($connection, $article['volume_id']);
+    checkDocumentId($connection, $article['document_id']);
+}
+
+/**
  * Create a new article.
  */
 function createArticle($connection, $article)
 {
-
+    checkArticleData($connection, $article);
+    $sql = <<<SQL
+        INSERT INTO articles (
+            article_type_id,
+            title,
+            abstract,
+            volume_id,
+            first_page,
+            last_page,
+            document_id
+        )
+        VALUES (
+            :article_type_id,
+            :title,
+            :abstract,
+            :volume_id,
+            :first_page,
+            :last_page,
+            :document_id
+        )
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':article_type_id', $article['article_type_id'], SQLITE3_INTEGER);
+    $stmt->bindParam(':title', $article['title'], SQLITE3_TEXT);
+    $stmt->bindParam(':abstract', $article['abstract'], SQLITE3_TEXT);
+    $stmt->bindParam(':volume_id', $article['volume_id'], SQLITE3_INTEGER);
+    $stmt->bindParam(':first_page', $article['first_page'], SQLITE3_INTEGER);
+    $stmt->bindParam(':last_page', $article['last_page'], SQLITE3_INTEGER);
+    $stmt->bindParam(':document_id', $article['document_id'], SQLITE3_INTEGER);
+    $stmt->execute();
+    $articleId = $connection->lastInsertRowID();
+    $stmt->close();
+    return $articleId;
 }
 
 /**
@@ -400,7 +511,38 @@ function createArticle($connection, $article)
  */
 function collectArticlesByVolume($connection, $volumeId)
 {
-
+    checkVolumeId($connection, $volumeId);
+    $sql = <<<SQL
+        SELECT
+            id,
+            article_type_id,
+            title,
+            abstract,
+            volume_id,
+            first_page,
+            last_page,
+            document_id
+        FROM articles
+        WHERE volume_id = :volume_id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':volume_id', $volumeId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    $articles = [];
+    while (($row = $result->fetchArray(SQLITE3_ASSOC))) {
+        $article = array(
+            'id' => $row['id'],
+            'article_type_id' => $row['article_type_id'],
+            'title' => $row['title'],
+            'abstract' => $row['abstract'],
+            'volume_id' => $row['volume_id'],
+            'first_page' => $row['first_page'],
+            'last_page' => $row['last_page'],
+            'document_id' => $row['document_id']
+        );
+        array_push($articles, $article);
+    }
+    return $articles;
 }
 
 /**
@@ -408,7 +550,27 @@ function collectArticlesByVolume($connection, $volumeId)
  */
 function getArticleById($connection, $articleId)
 {
-
+    $sql = <<<SQL
+        SELECT
+            id,
+            article_type_id,
+            title,
+            abstract,
+            volume_id,
+            first_page,
+            last_page,
+            document_id
+        FROM articles
+        WHERE id = :id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':id', $articleId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    $article = $result->fetchArray(SQLITE3_ASSOC);
+    if ($article == false) {
+        throw new ValueError('The article ID ('.$articleId.') is missing!');
+    }
+    return $article;
 }
 
 /**
@@ -416,7 +578,31 @@ function getArticleById($connection, $articleId)
  */
 function updateArticle($connection, $articleId, $article)
 {
-
+    checkArticleData($connection, $article);
+    $sql = <<<SQL
+        UPDATE articles
+        SET article_type_id = :article_type_id,
+            title = :title,
+            abstract = :abstract,
+            volume_id = :volume_id,
+            first_page = :first_page,
+            last_page = :last_page,
+            document_id = :document_id
+        WHERE id == :id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':article_type_id', $article['article_type_id'], SQLITE3_INTEGER);
+    $stmt->bindParam(':title', $article['title'], SQLITE3_TEXT);
+    $stmt->bindParam(':abstract', $article['abstract'], SQLITE3_TEXT);
+    $stmt->bindParam(':volume_id', $article['volume_id'], SQLITE3_INTEGER);
+    $stmt->bindParam(':first_page', $article['first_page'], SQLITE3_INTEGER);
+    $stmt->bindParam(':last_page', $article['last_page'], SQLITE3_INTEGER);
+    $stmt->bindParam(':document_id', $article['document_id'], SQLITE3_INTEGER);
+    $stmt->bindParam(':id', $articleId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    if ($connection->changes() != 1) {
+        throw new ValueError('The article ID ('.$articleId.') is missing!');
+    }
 }
 
 /**
@@ -424,7 +610,17 @@ function updateArticle($connection, $articleId, $article)
  */
 function removeArticle($connection, $articleId)
 {
-    // TODO: Remove the related document also!
+    $sql = <<<SQL
+        DELETE FROM articles
+        WHERE id == :id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':id', $articleId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    if ($connection->changes() != 1) {
+        throw new ValueError('The article ID ('.$articleId.') is missing!');
+    }
+    // TODO: Remove the related documents also! ..and test it before!
 }
 
 /**

@@ -6,7 +6,7 @@ function test_createArticle_successful()
 {
     $connection = db\connect('demo');
     $article = array(
-        'article_type' => 2,
+        'article_type_id' => 2,
         'title' => 'Competition paper for sample',
         'abstract' => 'The detailed abstract here.',
         'volume_id' => 3,
@@ -17,7 +17,7 @@ function test_createArticle_successful()
     $articleId = db\createArticle($connection, $article);
     assert(10 === $articleId);
     $retrieved = db\getArticleById($connection, $articleId);
-    assert(2 === $retrieved['article_type']);
+    assert(2 === $retrieved['article_type_id']);
     assert('Competition paper for sample' === $retrieved['title']);
     assert('The detailed abstract here.' === $retrieved['abstract']);
     assert(3 === $retrieved['volume_id']);
@@ -30,7 +30,7 @@ function test_createArticle_invalidType()
 {
     $connection = db\connect('demo');
     $article = array(
-        'article_type' => 20,
+        'article_type_id' => 20,
         'title' => 'Competition paper for sample',
         'abstract' => 'The detailed abstract here.',
         'volume_id' => 3,
@@ -54,7 +54,7 @@ function test_createArticle_missingTitle()
 {
     $connection = db\connect('demo');
     $article = array(
-        'article_type' => 2,
+        'article_type_id' => 2,
         'title' => ' ',
         'abstract' => 'The detailed abstract here.',
         'volume_id' => 3,
@@ -78,7 +78,7 @@ function test_createArticle_invalidVolumeId()
 {
     $connection = db\connect('demo');
     $article = array(
-        'article_type' => 2,
+        'article_type_id' => 2,
         'title' => 'Competition paper for sample',
         'abstract' => 'The detailed abstract here.',
         'volume_id' => 30,
@@ -102,7 +102,7 @@ function test_createArticle_invalidFirstPage()
 {
     $connection = db\connect('demo');
     $article = array(
-        'article_type' => 2,
+        'article_type_id' => 2,
         'title' => 'Competition paper for sample',
         'abstract' => 'The detailed abstract here.',
         'volume_id' => 3,
@@ -126,7 +126,7 @@ function test_createArticle_invalidLastPage()
 {
     $connection = db\connect('demo');
     $article = array(
-        'article_type' => 2,
+        'article_type_id' => 2,
         'title' => 'Competition paper for sample',
         'abstract' => 'The detailed abstract here.',
         'volume_id' => 3,
@@ -150,7 +150,7 @@ function test_createArticle_invalidPageInterval()
 {
     $connection = db\connect('demo');
     $article = array(
-        'article_type' => 2,
+        'article_type_id' => 2,
         'title' => 'Competition paper for sample',
         'abstract' => 'The detailed abstract here.',
         'volume_id' => 3,
@@ -174,7 +174,7 @@ function test_createArticle_invalidDocumentId()
 {
     $connection = db\connect('demo');
     $article = array(
-        'article_type' => 2,
+        'article_type_id' => 2,
         'title' => 'Competition paper for sample',
         'abstract' => 'The detailed abstract here.',
         'volume_id' => 3,
@@ -197,14 +197,14 @@ function test_createArticle_invalidDocumentId()
 function test_collectArticlesByVolume_empty()
 {
     $connection = db\connect('demo');
-    $articles = db\collectArticlesByVolume(5);
+    $articles = db\collectArticlesByVolume($connection, 5);
     assert([] === $articles);
 }
 
 function test_collectArticlesByVolume_multiple()
 {
     $connection = db\connect('demo');
-    $articles = db\collectArticlesByVolume(2);
+    $articles = db\collectArticlesByVolume($connection, 2);
     assert(3 === count($articles));
 
     assert(6 === $articles[0]['id']);
@@ -239,7 +239,7 @@ function test_collectArticlesByVolume_invalidId()
 {
     $connection = db\connect('demo');
     try {
-        $_ = db\collectArticlesByVolume(23);
+        $_ = db\collectArticlesByVolume($connection, 23);
         assert(false, 'Exception has not raised!');
     }
     catch (db\ValueError $error) {
@@ -283,7 +283,7 @@ function test_updateArticle_successful()
 {
     $connection = db\connect('demo');
     $article = array(
-        'article_type' => 3,
+        'article_type_id' => 3,
         'title' => 'Updated article title',
         'abstract' => 'Arbitrary text for checking the modifications.',
         'volume_id' => 2,
@@ -307,7 +307,7 @@ function test_updateArticle_invalidId()
 {
     $connection = db\connect('demo');
     $article = array(
-        'article_type' => 3,
+        'article_type_id' => 3,
         'title' => 'Updated article title',
         'abstract' => 'Arbitrary text for checking the modifications.',
         'volume_id' => 2,
@@ -331,7 +331,7 @@ function test_updateArticle_invalidType()
 {
     $connection = db\connect('demo');
     $article = array(
-        'article_type' => 31,
+        'article_type_id' => 31,
         'title' => 'Updated article title',
         'abstract' => 'Arbitrary text for checking the modifications.',
         'volume_id' => 2,
@@ -355,7 +355,7 @@ function test_updateArticle_missingTitle()
 {
     $connection = db\connect('demo');
     $article = array(
-        'article_type' => 3,
+        'article_type_id' => 3,
         'title' => ' ',
         'abstract' => 'Arbitrary text for checking the modifications.',
         'volume_id' => 2,
@@ -379,7 +379,7 @@ function test_updateArticle_invalidVolumeId()
 {
     $connection = db\connect('demo');
     $article = array(
-        'article_type' => 3,
+        'article_type_id' => 3,
         'title' => 'Updated article title',
         'abstract' => 'Arbitrary text for checking the modifications.',
         'volume_id' => 22,
@@ -403,7 +403,7 @@ function test_updateArticle_invalidFirstPage()
 {
     $connection = db\connect('demo');
     $article = array(
-        'article_type' => 3,
+        'article_type_id' => 3,
         'title' => 'Updated article title',
         'abstract' => 'Arbitrary text for checking the modifications.',
         'volume_id' => 2,
@@ -427,7 +427,7 @@ function test_updateArticle_invalidLastPage()
 {
     $connection = db\connect('demo');
     $article = array(
-        'article_type' => 3,
+        'article_type_id' => 3,
         'title' => 'Updated article title',
         'abstract' => 'Arbitrary text for checking the modifications.',
         'volume_id' => 2,
@@ -451,7 +451,7 @@ function test_updateArticle_invalidPageInterval()
 {
     $connection = db\connect('demo');
     $article = array(
-        'article_type' => 3,
+        'article_type_id' => 3,
         'title' => 'Updated article title',
         'abstract' => 'Arbitrary text for checking the modifications.',
         'volume_id' => 2,
@@ -475,11 +475,11 @@ function test_updateArticle_invalidDocumentId()
 {
     $connection = db\connect('demo');
     $article = array(
-        'article_type' => 3,
+        'article_type_id' => 3,
         'title' => 'Updated article title',
         'abstract' => 'Arbitrary text for checking the modifications.',
         'volume_id' => 2,
-        'first_page' => 0,
+        'first_page' => 10,
         'last_page' => 38,
         'document_id' => 43
     );
@@ -499,7 +499,7 @@ function test_removeArticle_successful()
 {
     $connection = db\connect('demo');
     db\removeArticle($connection, 7);
-    $articles = db\collectArticlesByVolume(2);
+    $articles = db\collectArticlesByVolume($connection, 2);
     assert(2 === count($articles));
 
     assert(6 === $articles[0]['id']);
