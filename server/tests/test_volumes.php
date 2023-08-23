@@ -139,7 +139,7 @@ function test_createVolume_invalidMonthZero()
         'volume' => 20,
         'number' => 2,
         'year' => 2012,
-        'month' => 13,
+        'month' => 0,
         'cover_image' => 'cover_2012_2.png',
         'is_visible' => 0
     );

@@ -164,11 +164,46 @@ function removeArticleType($connection, $articleTypeId)
 }
 
 /**
+ * Check the data of the volume.
+ */
+function checkVolumeData($volume)
+{
+    if (
+        gettype($volume['volume']) != 'integer' ||
+        $volume['volume'] < 1 ||
+        gettype($volume['number']) != 'integer' ||
+        $volume['number'] < 1 ||
+        $volume['year'] < 2000 ||
+        $volume['month'] < 1 ||
+        $volume['month'] > 12 ||
+        $volume['cover_image'] == '' ||
+        preg_match('/\\.png$/i', $volume['cover_image']) != 1
+    ) {
+        throw new ValueError('Invalid volume data!');
+    }
+}
+
+/**
  * Create a new volume.
  */
 function createVolume($connection, $volume)
 {
-
+    checkVolumeData($volume);
+    $sql = <<<SQL
+        INSERT INTO volumes (volume, number, year, month, cover_image, is_visible)
+        VALUES (:volume, :number, :year, :month, :cover_image, :is_visible)
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':volume', $volume['volume'], SQLITE3_INTEGER);
+    $stmt->bindParam(':number', $volume['number'], SQLITE3_INTEGER);
+    $stmt->bindParam(':year', $volume['year'], SQLITE3_INTEGER);
+    $stmt->bindParam(':month', $volume['month'], SQLITE3_INTEGER);
+    $stmt->bindParam(':cover_image', $volume['cover_image'], SQLITE3_TEXT);
+    $stmt->bindParam(':is_visible', $volume['is_visible'], SQLITE3_INTEGER);
+    $stmt->execute();
+    $volumeId = $connection->lastInsertRowID();
+    $stmt->close();
+    return $volumeId;
 }
 
 /**
@@ -176,7 +211,26 @@ function createVolume($connection, $volume)
  */
 function collectVolumes($connection)
 {
-
+    $sql = <<<SQL
+        SELECT id, volume, number, year, month, cover_image, is_visible
+        FROM volumes
+        ORDER BY id DESC
+    SQL;
+    $result = $connection->query($sql);
+    $volumes = [];
+    while (($row = $result->fetchArray(SQLITE3_ASSOC))) {
+        $volume = array(
+            'id' => $row['id'],
+            'volume' => $row['volume'],
+            'number' => $row['number'],
+            'year' => $row['year'],
+            'month' => $row['month'],
+            'cover_image' => $row['cover_image'],
+            'is_visible' => $row['is_visible']
+        );
+        array_push($volumes, $volume);
+    }
+    return $volumes;
 }
 
 /**
@@ -184,7 +238,19 @@ function collectVolumes($connection)
  */
 function getVolumeById($connection, $volumeId)
 {
-
+    $sql = <<<SQL
+        SELECT id, volume, number, year, month, cover_image, is_visible
+        FROM volumes
+        WHERE id == :id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':id', $volumeId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    $volume = $result->fetchArray(SQLITE3_ASSOC);
+    if ($volume == false) {
+        throw new ValueError('The volume ID ('.$volumeId.') is missing!');
+    }
+    return $volume;
 }
 
 /**
@@ -192,7 +258,29 @@ function getVolumeById($connection, $volumeId)
  */
 function updateVolume($connection, $volumeId, $volume)
 {
-
+    checkVolumeData($volume);
+    $sql = <<<SQL
+        UPDATE volumes
+        SET volume = :volume,
+            number = :number,
+            year = :year,
+            month = :month,
+            cover_image = :cover_image,
+            is_visible = :is_visible
+        WHERE id == :id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':volume', $volume['volume'], SQLITE3_INTEGER);
+    $stmt->bindParam(':number', $volume['number'], SQLITE3_INTEGER);
+    $stmt->bindParam(':year', $volume['year'], SQLITE3_INTEGER);
+    $stmt->bindParam(':month', $volume['month'], SQLITE3_INTEGER);
+    $stmt->bindParam(':cover_image', $volume['cover_image'], SQLITE3_TEXT);
+    $stmt->bindParam(':is_visible', $volume['is_visible'], SQLITE3_INTEGER);
+    $stmt->bindParam(':id', $volumeId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    if ($connection->changes() != 1) {
+        throw new ValueError('The volume ID ('.$volumeId.') is missing!');
+    }
 }
 
 /**
@@ -200,7 +288,28 @@ function updateVolume($connection, $volumeId, $volume)
  */
 function removeVolume($connection, $volumeId)
 {
-
+    $sql = <<<SQL
+        SELECT count(id)
+        FROM articles
+        WHERE volume_id == :volume_id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':volume_id', $volumeId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    $row = $result->fetchArray(SQLITE3_ASSOC);
+    if ($row['count(id)'] > 0) {
+        throw new ValueError('Unable to remove, because the volume ID ('.$volumeId.') is in use!');
+    }
+    $sql = <<<SQL
+        DELETE FROM volumes
+        WHERE id == :id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':id', $volumeId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    if ($connection->changes() != 1) {
+        throw new ValueError('The volume ID ('.$volumeId.') is missing!');
+    }
 }
 
 /**
