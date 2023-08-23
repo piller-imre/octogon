@@ -140,6 +140,18 @@ function updateArticleType($connection, $articleTypeId, $articleType)
 function removeArticleType($connection, $articleTypeId)
 {
     $sql = <<<SQL
+        SELECT count(id)
+        FROM articles
+        WHERE article_type_id == :article_type_id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':article_type_id', $articleTypeId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    $row = $result->fetchArray(SQLITE3_ASSOC);
+    if ($row['count(id)'] > 0) {
+        throw new ValueError('The article type ID ('.$articleTypeId.') is in use!');
+    }
+    $sql = <<<SQL
         DELETE FROM article_types
         WHERE id == :id
     SQL;
