@@ -27,7 +27,7 @@ function test_createPost_missingContent()
         $_ = db\createPost($connection, $post);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The content of the post is missing!', $error->getMessage());
     }
     catch (Exception $error) {
@@ -92,7 +92,7 @@ function test_getPostById_invalidId()
         $_ = db\getPostById($connection, 404);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The post ID (404) is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -124,7 +124,7 @@ function test_updatePost_invalidId()
         db\updatePost($connection, 404, $post);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The post ID (404) is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -143,7 +143,7 @@ function test_updatePost_missingContent()
         db\updatePost($connection, 4, $post);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The content of the post is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -171,7 +171,7 @@ function test_removePost_invalidId()
         db\removePost($connection, 404);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The post ID (404) is missing!' === $error->getMessage());
     }
     catch (Exception $error) {

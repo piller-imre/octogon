@@ -25,7 +25,7 @@ function test_createDocument_missingName()
         $_ = db\createDocument($connection, $document);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The name of the document is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -43,7 +43,7 @@ function test_createDocument_existingName()
         $_ = db\createDocument($connection, $document);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The document "OQ_2010_1.pdf" is already exists!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -89,7 +89,7 @@ function test_removeDocument_invalidId()
         db\removeDocument($connection, 30);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The document ID (30) is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -104,7 +104,7 @@ function test_removeDocument_inUse()
         db\removeDocument($connection, 2);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The document ID (2) is in use!' === $error->getMessage());
     }
     catch (Exception $error) {

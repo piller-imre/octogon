@@ -41,7 +41,7 @@ function test_createAuthorship_invalidArticleId()
         $_ = db\createAuthorship($connection, $authorship);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The article ID (100) is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -64,7 +64,7 @@ function test_createAuthorship_invalidContributorId()
         $_ = db\createAuthorship($connection, $authorship);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The contributor ID (20) is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -87,7 +87,7 @@ function test_createAuthorship_missingGivenName()
         $_ = db\createAuthorship($connection, $authorship);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The given name of the author is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -110,7 +110,7 @@ function test_createAuthorship_missingFamilyName()
         $_ = db\createAuthorship($connection, $authorship);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The family name of the author is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -133,7 +133,7 @@ function test_createAuthorship_missingAffiliation()
         $_ = db\createAuthorship($connection, $authorship);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The affiliation of the author is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -156,7 +156,7 @@ function test_createAuthorship_missingEmail()
         $_ = db\createAuthorship($connection, $authorship);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The e-mail address of the author is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -194,7 +194,7 @@ function test_collectAuthorshipsByArticleId_invalidArticleId()
         $_ = db\collectAuthorshipsByArticleId($connection, 41);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The article ID (41) is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -239,7 +239,7 @@ function test_updateAuthorship_invalidId()
         db\updateAuthorship($connection, 234, $authorship);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The authorship ID (234) is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -262,7 +262,7 @@ function test_updateAuthorship_invalidArticleId()
         db\updateAuthorship($connection, 4, $authorship);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The article ID (21) is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -285,7 +285,7 @@ function test_updateAuthorship_invalidContributorId()
         db\updateAuthorship($connection, 4, $authorship);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The contributor ID (32) is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -308,7 +308,7 @@ function test_updateAuthorship_missingGivenName()
         db\updateAuthorship($connection, 4, $authorship);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The given name of the author is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -331,7 +331,7 @@ function test_updateAuthorship_missingFamilyName()
         db\updateAuthorship($connection, 4, $authorship);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The family name of the author is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -354,7 +354,7 @@ function test_updateAuthorship_missingAffiliation()
         db\updateAuthorship($connection, 4, $authorship);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The affiliation of the author is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -377,7 +377,7 @@ function test_updateAuthorship_missingEmail()
         db\updateAuthorship($connection, 4, $authorship);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The e-mail address of the author is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -400,7 +400,7 @@ function test_updateAuthorship_invalidEmail()
         db\updateAuthorship($connection, 4, $authorship);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The e-mail address of the author is invalid!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -449,7 +449,7 @@ function test_moveAuthorshipUp_invalidId()
         $_ = db\moveAuthorshipUp($connection, 70);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The authorship ID (70) is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -498,7 +498,7 @@ function test_moveAuthorshipDown_invalidId()
         $_ = db\moveAuthorshipDown($connection, 80);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The authorship ID (80) is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -521,7 +521,7 @@ function test_removeAuthorship_invalidId()
         db\removeAuthorship($connection, 60);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The authorship ID (60) is missing!' === $error->getMessage());
     }
     catch (Exception $error) {

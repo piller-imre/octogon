@@ -42,7 +42,7 @@ function test_createArticle_invalidType()
         $_ = db\createArticle($connection, $article);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The article type ID (20) is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -57,7 +57,7 @@ function test_removeArticleType_inUse()
         $_ = db\removeArticleType($connection, 3);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The article type ID (3) is in use!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -81,7 +81,7 @@ function test_createArticle_missingTitle()
         $_ = db\createArticle($connection, $article);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The title of the article is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -105,7 +105,7 @@ function test_createArticle_invalidVolumeId()
         $_ = db\createArticle($connection, $article);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The volume ID (30) is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -129,7 +129,7 @@ function test_createArticle_invalidFirstPage()
         $_ = db\createArticle($connection, $article);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The first page of the article (0) is invalid!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -153,7 +153,7 @@ function test_createArticle_invalidLastPage()
         $_ = db\createArticle($connection, $article);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The last page of the article (0) is invalid!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -177,7 +177,7 @@ function test_createArticle_invalidPageInterval()
         $_ = db\createArticle($connection, $article);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The page interval (from 50 to 40) is invalid!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -201,7 +201,7 @@ function test_createArticle_invalidDocumentId()
         $_ = db\createArticle($connection, $article);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The document ID (123) is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -257,7 +257,7 @@ function test_collectArticlesByVolume_invalidId()
         $_ = db\collectArticlesByVolume(23);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The volume ID (23) is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -286,7 +286,7 @@ function test_getArticleById_invalidId()
         $_ = db\getArticleById($connection, 77);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The article ID (77) is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -334,7 +334,7 @@ function test_updateArticle_invalidId()
         db\updateArticle($connection, 55, $article);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The article ID (55) is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -358,7 +358,7 @@ function test_updateArticle_invalidType()
         db\updateArticle($connection, 5, $article);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The article type ID (31) is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -382,7 +382,7 @@ function test_updateArticle_missingTitle()
         db\updateArticle($connection, 5, $article);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The title of the article is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -406,7 +406,7 @@ function test_updateArticle_invalidVolumeId()
         db\updateArticle($connection, 5, $article);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The volume ID (22) is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -430,7 +430,7 @@ function test_updateArticle_invalidFirstPage()
         db\updateArticle($connection, 5, $article);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The first page of the article (0) is invalid!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -454,7 +454,7 @@ function test_updateArticle_invalidLastPage()
         db\updateArticle($connection, 5, $article);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The last page of the article (0) is invalid!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -478,7 +478,7 @@ function test_updateArticle_invalidPageInterval()
         db\updateArticle($connection, 5, $article);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The page interval (from 40 to 38) is invalid!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -502,7 +502,7 @@ function test_updateArticle_invalidDocumentId()
         db\updateArticle($connection, 5, $article);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The document ID (43) is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -543,7 +543,7 @@ function test_removeArticle_invalidId()
         db\removeArticle($connection, 75);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The article ID (75) is missing!' === $error->getMessage());
     }
     catch (Exception $error) {

@@ -34,7 +34,7 @@ function test_createContributor_missingGivenName()
         $_ = db\createContributor($connection, $contributor);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The given name of the contributor is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -55,7 +55,7 @@ function test_createContributor_missingFamilyName()
         $_ = db\createContributor($connection, $contributor);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The family name of the contributor is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -76,7 +76,7 @@ function test_createContributor_missingAffiliation()
         $_ = db\createContributor($connection, $contributor);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The affiliation of the contributor is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -97,7 +97,7 @@ function test_createContributor_missingEmail()
         $_ = db\createContributor($connection, $contributor);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The e-mail address of the contributor is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -118,7 +118,7 @@ function test_createContributor_invalidEmail()
         $_ = db\createContributor($connection, $contributor);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The e-mail address of the contributor is invalid!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -180,7 +180,7 @@ function test_getContributorById_invalidId()
         $_ = db\getContributorById($connection, 99);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The contributor ID (99) is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -219,7 +219,7 @@ function test_updateContributor_invalidId()
         db\updateContributor($connection, 50, $contributor);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The contributor ID (50) is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -240,7 +240,7 @@ function test_updateContributor_missingGivenName()
         db\updateContributor($connection, 4, $contributor);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The given name of the contributor is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -261,7 +261,7 @@ function test_updateContributor_missingFamilyName()
         db\updateContributor($connection, 4, $contributor);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The family name of the contributor is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -282,7 +282,7 @@ function test_updateContributor_missingAffiliation()
         db\updateContributor($connection, 4, $contributor);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The affiliation of the contributor is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -303,7 +303,7 @@ function test_updateContributor_missingEmail()
         db\updateContributor($connection, 4, $contributor);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The e-mail address of the contributor is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -324,7 +324,7 @@ function test_updateContributor_invalidEmail()
         db\updateContributor($connection, 4, $contributor);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The e-mail address of the contributor is invalid!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -361,7 +361,7 @@ function test_removeContributor_invalidId()
         db\removeContributor($connection, 40);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The contributor ID (40) is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -376,7 +376,7 @@ function test_removeContributor_isAnAuthor()
         db\removeContributor($connection, 4);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The contributor ID (4) is referenced as an author!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -400,7 +400,7 @@ function test_removeContributor_isAnEditor()
         db\removeContributor($connection, 7);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The contributor ID (4) is referenced as an editor!' === $error->getMessage());
     }
     catch (Exception $error) {

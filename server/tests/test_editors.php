@@ -51,7 +51,7 @@ function test_addToEditorialBoard_invalidId()
         db\addToEditorialBoard($connection, 8);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The contributor ID (8) is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -66,7 +66,7 @@ function test_addToEditorialBoard_alreadyAdded()
         db\addToEditorialBoard($connection, 2);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The editor with contributor ID (8) has been already added!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -101,7 +101,7 @@ function test_removeFromEditorialBoard_invalidId()
         db\removeFromEditorialBoard($connection, 9);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The contributor ID (9) is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -116,7 +116,7 @@ function test_removeFromEditorialBoard_notAdded()
         db\removeFromEditorialBoard($connection, 4);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The editor with contributor ID (4) has not been added yet!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -155,7 +155,7 @@ function test_moveEditorUp_invalidId()
         db\moveEditorUp($connection, 12);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The contributor ID (12) is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -218,7 +218,7 @@ function test_moveEditorDown_invalidId()
         db\moveEditorDown($connection, 15);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The contributor ID (15) is missing!' === $error->getMessage());
     }
     catch (Exception $error) {

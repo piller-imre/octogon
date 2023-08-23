@@ -32,7 +32,7 @@ function test_createVolume_invalidVolumeString()
         $_ = db\createVolume($connection, $volume);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('Invalid volume data!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -55,7 +55,7 @@ function test_createVolume_invalidVolumeNegative()
         $_ = db\createVolume($connection, $volume);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('Invalid volume data!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -78,7 +78,7 @@ function test_createVolume_invalidNumberString()
         $_ = db\createVolume($connection, $volume);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('Invalid volume data!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -101,7 +101,7 @@ function test_createVolume_invalidNumberNegative()
         $_ = db\createVolume($connection, $volume);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('Invalid volume data!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -124,7 +124,7 @@ function test_createVolume_invalidYear()
         $_ = db\createVolume($connection, $volume);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('Invalid volume data!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -147,7 +147,7 @@ function test_createVolume_invalidMonthZero()
         $_ = db\createVolume($connection, $volume);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('Invalid volume data!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -170,7 +170,7 @@ function test_createVolume_invalidMonthLarge()
         $_ = db\createVolume($connection, $volume);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('Invalid volume data!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -193,7 +193,7 @@ function test_createVolume_missingCoverImage()
         $_ = db\createVolume($connection, $volume);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('Invalid volume data!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -216,7 +216,7 @@ function test_createVolume_invalidCoverImage()
         $_ = db\createVolume($connection, $volume);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('Invalid volume data!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -298,7 +298,7 @@ function test_getVolumeById_invalidId()
         $volume = db\getVolumeById($connection, 40);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The volume ID (40) is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -343,7 +343,7 @@ function test_updateVolume_invalidId()
         db\updateVolume($connection, 50, $volume);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The volume ID (50) is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -366,7 +366,7 @@ function test_updateVolume_invalidVolume()
         db\updateVolume($connection, 5, $volume);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('Invalid volume data!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -389,7 +389,7 @@ function test_updateVolume_invalidNumber()
         db\updateVolume($connection, 5, $volume);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('Invalid volume data!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -412,7 +412,7 @@ function test_updateVolume_invalidYear()
         db\updateVolume($connection, 5, $volume);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('Invalid volume data!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -435,7 +435,7 @@ function test_updateVolume_invalidMonth()
         db\updateVolume($connection, 5, $volume);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('Invalid volume data!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -458,7 +458,7 @@ function test_updateVolume_missingCoverImage()
         db\updateVolume($connection, 5, $volume);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('Invalid volume data!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -481,7 +481,7 @@ function test_updateVolume_invalidCoverImage()
         db\updateVolume($connection, 5, $volume);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('Invalid volume data!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -504,7 +504,7 @@ function test_removeVolume_invalidId()
         db\removeVolume($connection, 40);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('The volume ID (40) is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -519,7 +519,7 @@ function test_removeVolume_inUse()
         db\removeVolume($connection, 3);
         assert(false, 'Exception has not raised!');
     }
-    catch (ValueError $error) {
+    catch (db\ValueError $error) {
         assert('Unable to remove, because the volume ID (3) is in use!' === $error->getMessage());
     }
     catch (Exception $error) {
@@ -530,4 +530,3 @@ function test_removeVolume_inUse()
 require '../utils/test_runner.php';
 
 ?>
-
