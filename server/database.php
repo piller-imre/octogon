@@ -624,19 +624,81 @@ function removeArticle($connection, $articleId)
 }
 
 /**
+ * Check the contributor data.
+ */
+function checkContributorData($contributor)
+{
+    if (trim($contributor['given_name']) == '') {
+        throw new ValueError('The given name of the contributor is missing!');
+    }
+    if (trim($contributor['family_name']) == '') {
+        throw new ValueError('The family name of the contributor is missing!');
+    }
+    if (trim($contributor['affiliation']) == '') {
+        throw new ValueError('The affiliation of the contributor is missing!');
+    }
+    if (trim($contributor['email']) == '') {
+        throw new ValueError('The e-mail address of the contributor is missing!');
+    }
+    if (filter_var($contributor['email'], FILTER_VALIDATE_EMAIL) == false) {
+        throw new ValueError('The e-mail address of the contributor is invalid!');
+    }
+}
+
+/**
  * Create a new contributor.
  */
 function createContributor($connection, $contributor)
 {
-
+    checkContributorData($contributor);
+    $sql = <<<SQL
+        INSERT INTO contributors (given_name, family_name, affiliation, email)
+        VALUES (:given_name, :family_name, :affiliation, :email)
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':given_name', $contributor['given_name'], SQLITE3_TEXT);
+    $stmt->bindParam(':family_name', $contributor['family_name'], SQLITE3_TEXT);
+    $stmt->bindParam(':affiliation', $contributor['affiliation'], SQLITE3_TEXT);
+    $stmt->bindParam(':email', $contributor['email'], SQLITE3_TEXT);
+    $stmt->execute();
+    $contributorId = $connection->lastInsertRowID();
+    $stmt->close();
+    return $contributorId;
 }
 
 /**
- * Collect all contributors.
+ * Collect all contributors against a filter expression.
  */
 function collectContributorsByFilter($connection, $filterExpression)
 {
-
+    $sql = <<<SQL
+        SELECT
+            id,
+            given_name,
+            family_name,
+            affiliation,
+            email,
+            lower(given_name || ' ' || family_name || ' ' || affiliation || ' ' || email) as descriptor
+        FROM contributors
+        WHERE descriptor LIKE :pattern
+        ORDER BY family_name
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $pattern = '%'.$filterExpression.'%';
+    $stmt->bindParam(':pattern', $pattern, SQLITE3_TEXT);
+    $result = $stmt->execute();
+    $contributors = [];
+    while (($row = $result->fetchArray(SQLITE3_ASSOC))) {
+        $contributor = array(
+            'id' => $row['id'],
+            'given_name' => $row['given_name'],
+            'family_name' => $row['family_name'],
+            'affiliation' => $row['affiliation'],
+            'email' => $row['email']
+        );
+        array_push($contributors, $contributor);
+    }
+    return $contributors;
 }
 
 /**
@@ -644,7 +706,19 @@ function collectContributorsByFilter($connection, $filterExpression)
  */
 function getContributorById($connection, $contributorId)
 {
-
+    $sql = <<<SQL
+        SELECT id, given_name, family_name, affiliation, email
+        FROM contributors
+        WHERE id = :id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':id', $contributorId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    $contributor = $result->fetchArray(SQLITE3_ASSOC);
+    if ($contributor == false) {
+        throw new ValueError('The contributor ID ('.$contributorId.') is missing!');
+    }
+    return $contributor;
 }
 
 /**
@@ -652,7 +726,65 @@ function getContributorById($connection, $contributorId)
  */
 function updateContributor($connection, $contributorId, $contributor)
 {
+    checkContributorData($contributor);
+    $sql = <<<SQL
+        UPDATE contributors
+        SET given_name = :given_name,
+            family_name = :family_name,
+            affiliation = :affiliation,
+            email = :email
+        WHERE id == :id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':given_name', $contributor['given_name'], SQLITE3_TEXT);
+    $stmt->bindParam(':family_name', $contributor['family_name'], SQLITE3_TEXT);
+    $stmt->bindParam(':affiliation', $contributor['affiliation'], SQLITE3_TEXT);
+    $stmt->bindParam(':email', $contributor['email'], SQLITE3_TEXT);        
+    $stmt->bindParam(':id', $contributorId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    if ($connection->changes() != 1) {
+        throw new ValueError('The contributor ID ('.$contributorId.') is missing!');
+    }
+}
 
+/**
+ * Check that the contributor is an author.
+ */
+function isAnAuthor($connection, $contributorId)
+{
+    $sql = <<<SQL
+        SELECT count(id)
+        FROM authorships
+        WHERE contributor_id == :contributor_id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':contributor_id', $contributorId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    $row = $result->fetchArray(SQLITE3_ASSOC);
+    if ($row['count(id)'] > 0) {
+        return true;
+    }
+    return false;
+}
+
+/**
+ * Check that the contributor is an author.
+ */
+function isAnEditor($connection, $contributorId)
+{
+    $sql = <<<SQL
+        SELECT count(id)
+        FROM editors
+        WHERE contributor_id == :contributor_id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':contributor_id', $contributorId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    $row = $result->fetchArray(SQLITE3_ASSOC);
+    if ($row['count(id)'] > 0) {
+        return true;
+    }
+    return false;
 }
 
 /**
@@ -660,7 +792,22 @@ function updateContributor($connection, $contributorId, $contributor)
  */
 function removeContributor($connection, $contributorId)
 {
-
+    if (isAnAuthor($connection, $contributorId)) {
+        throw new ValueError('The contributor ID ('.$contributorId.') is referenced as an author!');
+    }
+    if (isAnEditor($connection, $contributorId)) {
+        throw new ValueError('The contributor ID ('.$contributorId.') is referenced as an editor!');
+    }
+    $sql = <<<SQL
+        DELETE FROM contributors
+        WHERE id == :id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':id', $contributorId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    if ($connection->changes() != 1) {
+        throw new ValueError('The contributor ID ('.$contributorId.') is missing!');
+    }
 }
 
 /**
@@ -722,7 +869,16 @@ function collectEditors($connection)
  */
 function addToEditorialBoard($connection, $contributorId)
 {
-
+    $sql = <<<SQL
+        INSERT INTO editors (contributor_id, indx)
+        VALUES (:contributor_id, 0)
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':contributor_id', $contributorId, SQLITE3_INTEGER);
+    $stmt->execute();
+    $editorId = $connection->lastInsertRowID();
+    $stmt->close();
+    return $editorId;
 }
 
 /**

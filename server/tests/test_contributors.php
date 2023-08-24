@@ -4,7 +4,7 @@ require '../database.php';
 
 function test_createContributor_successful()
 {
-    $connection = db\connect('empty');
+    $connection = db\connect('demo');
     $contributor = array(
         'given_name' => 'Gao',
         'family_name' => 'Minghze',
@@ -12,7 +12,7 @@ function test_createContributor_successful()
         'email' => 'g.minghze@octogon.com'
     );
     $contributorId = db\createContributor($connection, $contributor);
-    assert($contributorId === 7);
+    assert(7 === $contributorId);
     $retrieved = db\getContributorById($connection, $contributorId);
     assert(7 === $retrieved['id']);
     assert('Gao' === $retrieved['given_name']);
@@ -144,22 +144,27 @@ function test_collectContributorsByFilter_withFilter()
 {
     $connection = db\connect('demo');
     $contributors = db\collectContributorsByFilter($connection, 'er');
-    assert(3 === count($contributors));
-    assert(3 === $contributors[0]['id']);
-    assert('José Luis' === $contributors[0]['given_name']);
-    assert('Díaz-Barrero' === $contributors[0]['family_name']);
-    assert('Universitat Politechnica de Catalunya, Barcelona, Spain' === $contributors[0]['affiliation']);
-    assert('barrero@octogon.com' === $contributors[0]['email']);
+    assert(4 === count($contributors));
+    assert(2 === $contributors[0]['id']);
+    assert('Zhao' === $contributors[0]['given_name']);
+    assert('Changjian' === $contributors[0]['family_name']);
+    assert('China Jiliang University, Hangzhou, China' === $contributors[0]['affiliation']);
+    assert('zhao@octogon.com' === $contributors[0]['email']);
     assert(4 === $contributors[1]['id']);
     assert('Sever S.' === $contributors[1]['given_name']);
     assert('Dragomir' === $contributors[1]['family_name']);
     assert('Victoria University, Melbourne, Australia' === $contributors[1]['affiliation']);
     assert('dragomir@octogon.com' === $contributors[1]['email']);
-    assert(5 === $contributors[2]['id']);
-    assert('Péter' === $contributors[2]['given_name']);
-    assert('Körtesi' === $contributors[2]['family_name']);
-    assert('University of Miskolc, Miskolc, Hungary' === $contributors[2]['affiliation']);
-    assert('pkortesi@octogon.com' === $contributors[2]['email']);
+    assert(3 === $contributors[2]['id']);
+    assert('José Luis' === $contributors[2]['given_name']);
+    assert('Díaz-Barrero' === $contributors[2]['family_name']);
+    assert('Universitat Politechnica de Catalunya, Barcelona, Spain' === $contributors[2]['affiliation']);
+    assert('barrero@octogon.com' === $contributors[2]['email']);
+    assert(5 === $contributors[3]['id']);
+    assert('Péter' === $contributors[3]['given_name']);
+    assert('Körtesi' === $contributors[3]['family_name']);
+    assert('University of Miskolc, Miskolc, Hungary' === $contributors[3]['affiliation']);
+    assert('pkortesi@octogon.com' === $contributors[3]['email']);
 }
 
 function test_getContributorById_successful()
@@ -346,12 +351,12 @@ function test_removeContributor_successful()
     db\removeContributor($connection, $contributorId);
     $contributors = db\collectContributorsByFilter($connection, '');
     assert(6 === count($contributors));
-    assert(1 === $contributor[0]['id']);
-    assert(2 === $contributor[1]['id']);
-    assert(3 === $contributor[2]['id']);
-    assert(4 === $contributor[3]['id']);
-    assert(5 === $contributor[4]['id']);
-    assert(6 === $contributor[5]['id']);
+    assert(1 === $contributors[0]['id']);
+    assert(2 === $contributors[1]['id']);
+    assert(4 === $contributors[2]['id']);
+    assert(3 === $contributors[3]['id']);
+    assert(5 === $contributors[4]['id']);
+    assert(6 === $contributors[5]['id']);
 }
 
 function test_removeContributor_invalidId()
@@ -401,7 +406,7 @@ function test_removeContributor_isAnEditor()
         assert(false, 'Exception has not raised!');
     }
     catch (db\ValueError $error) {
-        assert('The contributor ID (4) is referenced as an editor!' === $error->getMessage());
+        assert('The contributor ID (7) is referenced as an editor!' === $error->getMessage());
     }
     catch (Exception $error) {
         assert(false, 'Invalid exception type!');
