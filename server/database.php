@@ -811,11 +811,100 @@ function removeContributor($connection, $contributorId)
 }
 
 /**
+ * Check the author data.
+ */
+function checkAuthorData($authorship)
+{
+    if (trim($authorship['given_name']) == '') {
+        throw new ValueError('The given name of the author is missing!');
+    }
+    if (trim($authorship['family_name']) == '') {
+        throw new ValueError('The family name of the author is missing!');
+    }
+    if (trim($authorship['affiliation']) == '') {
+        throw new ValueError('The affiliation of the author is missing!');
+    }
+    if (trim($authorship['email']) == '') {
+        throw new ValueError('The e-mail address of the author is missing!');
+    }
+    if (filter_var($authorship['email'], FILTER_VALIDATE_EMAIL) == false) {
+        throw new ValueError('The e-mail address of the author is invalid!');
+    }
+}
+
+/**
+ * Check the article id.
+ */
+function checkArticleId($connection, $articleId)
+{
+    $sql = <<<SQL
+        SELECT count(id)
+        FROM articles
+        WHERE id == :id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':id', $articleId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    $row = $result->fetchArray(SQLITE3_ASSOC);
+    if ($row['count(id)'] != 1) {
+        throw new ValueError('The article ID ('.$articleId.') is missing!');
+    }
+}
+
+/**
+ * Check the contributor id.
+ */
+function checkContributorId($connection, $contributorId)
+{
+    $sql = <<<SQL
+        SELECT count(id)
+        FROM contributors
+        WHERE id == :id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':id', $contributorId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    $row = $result->fetchArray(SQLITE3_ASSOC);
+    if ($row['count(id)'] != 1) {
+        throw new ValueError('The contributor ID ('.$contributorId.') is missing!');
+    }
+}
+
+/**
  * Create an authorship.
  */
 function createAuthorship($connection, $authorship)
 {
-
+    checkAuthorData($authorship);
+    checkArticleId($connection, $authorship['article_id']);
+    checkContributorId($connection, $authorship['contributor_id']);
+    $sql = <<<SQL
+        INSERT INTO authorships (
+            article_id, contributor_id,
+            indx,
+            given_name, family_name, affiliation, email
+        )
+        VALUES (
+            :article_id, :contributor_id,
+            (
+                SELECT count(id)
+                FROM authorships
+                WHERE article_id = :article_id
+            ),
+            :given_name, :family_name, :affiliation, :email
+        )
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':article_id', $authorship['article_id'], SQLITE3_INTEGER);
+    $stmt->bindParam(':contributor_id', $authorship['contributor_id'], SQLITE3_INTEGER);
+    $stmt->bindParam(':given_name', $authorship['given_name'], SQLITE3_TEXT);
+    $stmt->bindParam(':family_name', $authorship['family_name'], SQLITE3_TEXT);
+    $stmt->bindParam(':affiliation', $authorship['affiliation'], SQLITE3_TEXT);
+    $stmt->bindParam(':email', $authorship['email'], SQLITE3_TEXT);
+    $stmt->execute();
+    $authorshipId = $connection->lastInsertRowID();
+    $stmt->close();
+    return $authorshipId;
 }
 
 /**
@@ -823,7 +912,33 @@ function createAuthorship($connection, $authorship)
  */
 function collectAuthorshipsByArticleId($connection, $articleId)
 {
-
+    checkArticleId($connection, $articleId);
+    $sql = <<<SQL
+        SELECT
+            id, article_id, contributor_id, indx,
+            given_name, family_name, affiliation, email
+        FROM authorships
+        WHERE article_id = :article_id
+        ORDER BY indx
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':article_id', $articleId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    $authorships = [];
+    while (($row = $result->fetchArray(SQLITE3_ASSOC))) {
+        $authorship = array(
+            'id' => $row['id'],
+            'article_id' => $row['article_id'],
+            'contributor_id' => $row['contributor_id'],
+            'indx' => $row['indx'],
+            'given_name' => $row['given_name'],
+            'family_name' => $row['family_name'],
+            'affiliation' => $row['affiliation'],
+            'email' => $row['email']
+        );
+        array_push($authorships, $authorship);
+    }
+    return $authorships;
 }
 
 /**
@@ -831,7 +946,59 @@ function collectAuthorshipsByArticleId($connection, $articleId)
  */
 function updateAuthorship($connection, $authorshipId, $authorship)
 {
+    checkAuthorData($authorship);
+    checkArticleId($connection, $authorship['article_id']);
+    checkContributorId($connection, $authorship['contributor_id']);
+    $sql = <<<SQL
+        UPDATE authorships
+        SET article_id = :article_id,
+            contributor_id = :contributor_id,
+            given_name = :given_name,
+            family_name = :family_name,
+            affiliation = :affiliation,
+            email = :email
+        WHERE id == :id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':article_id', $authorship['article_id'], SQLITE3_INTEGER);
+    $stmt->bindParam(':contributor_id', $authorship['contributor_id'], SQLITE3_INTEGER);
+    $stmt->bindParam(':given_name', $authorship['given_name'], SQLITE3_TEXT);
+    $stmt->bindParam(':family_name', $authorship['family_name'], SQLITE3_TEXT);
+    $stmt->bindParam(':affiliation', $authorship['affiliation'], SQLITE3_TEXT);
+    $stmt->bindParam(':email', $authorship['email'], SQLITE3_TEXT);        
+    $stmt->bindParam(':id', $authorshipId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    if ($connection->changes() != 1) {
+        throw new ValueError('The authorship ID ('.$authorshipId.') is missing!');
+    }
+}
 
+/**
+ * Collect the ordered list of authorship ids regard to the related article.
+ */
+function collectOrderedAuthorshipIds($connection, $authorshipId)
+{
+    $sql = <<<SQL
+        SELECT id
+        FROM authorships
+        WHERE article_id = (
+            SELECT article_id
+            FROM authorships
+            WHERE id = :authorship_id
+        )
+        ORDER BY indx
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':authorship_id', $authorshipId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    $orderedIds = [];
+    while (($row = $result->fetchArray(SQLITE3_ASSOC))) {
+        array_push($orderedIds, $row['id']);
+    }
+    if (count($orderedIds) == 0) {
+        throw new ValueError('The authorship ID ('.$authorshipId.') is missing!');
+    }
+    return $orderedIds;
 }
 
 /**
@@ -839,6 +1006,32 @@ function updateAuthorship($connection, $authorshipId, $authorship)
  */
 function moveAuthorshipUp($connection, $authorshipId)
 {
+    $orderedIds = collectOrderedAuthorshipIds($connection, $authorshipId);
+    $i = 0;
+    while ($orderedIds[$i] != $authorshipId) {
+        ++$i;
+    }
+    if ($i == 0) {
+        return;
+    }
+    $sql = <<<SQL
+        UPDATE authorships
+        SET indx = indx - 1
+        WHERE id = :authorship_id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':authorship_id', $authorshipId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    $stmt->close();
+    $sql = <<<SQL
+        UPDATE authorships
+        SET indx = indx + 1
+        WHERE id = :authorship_id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':authorship_id', $orderedIds[$i - 1], SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    $stmt->close();
 }
 
 /**
@@ -846,6 +1039,32 @@ function moveAuthorshipUp($connection, $authorshipId)
  */
 function moveAuthorshipDown($connection, $authorshipId)
 {
+    $orderedIds = collectOrderedAuthorshipIds($connection, $authorshipId);
+    $i = 0;
+    while ($orderedIds[$i] != $authorshipId) {
+        ++$i;
+    }
+    if ($i == count($orderedIds) - 1) {
+        return;
+    }
+    $sql = <<<SQL
+        UPDATE authorships
+        SET indx = indx + 1
+        WHERE id = :authorship_id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':authorship_id', $authorshipId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    $stmt->close();
+    $sql = <<<SQL
+        UPDATE authorships
+        SET indx = indx - 1
+        WHERE id = :authorship_id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':authorship_id', $orderedIds[$i + 1], SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    $stmt->close();
 }
 
 /**
@@ -853,7 +1072,16 @@ function moveAuthorshipDown($connection, $authorshipId)
  */
 function removeAuthorship($connection, $authorshipId)
 {
-
+    $sql = <<<SQL
+        DELETE FROM authorships
+        WHERE id == :id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':id', $authorshipId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    if ($connection->changes() != 1) {
+        throw new ValueError('The authorship ID ('.$authorshipId.') is missing!');
+    }
 }
 
 /**

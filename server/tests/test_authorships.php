@@ -16,14 +16,14 @@ function test_createAuthorship_successful()
     $authorshipId = db\createAuthorship($connection, $authorship);
     assert(12 === $authorshipId);
     $authorships = db\collectAuthorshipsByArticleId($connection, 1);
-    assert(3 === count($authorships));
-    assert(12 === $authorships[2]['id']);
-    assert(1 === $authorships[2]['article_id']);
-    assert(2 === $authorships[2]['contributor_id']);
-    assert('Zhao' === $authorships[2]['given_name']);
-    assert('Changjian' === $authorships[2]['family_name']);
-    assert('China' === $authorships[2]['affiliation']);
-    assert('zhao.changjian@octogon.com' === $authorships[2]['email']);
+    assert(2 === count($authorships));
+    assert(12 === $authorships[1]['id']);
+    assert(1 === $authorships[1]['article_id']);
+    assert(2 === $authorships[1]['contributor_id']);
+    assert('Zhao' === $authorships[1]['given_name']);
+    assert('Changjian' === $authorships[1]['family_name']);
+    assert('China' === $authorships[1]['affiliation']);
+    assert('zhao.changjian@octogon.com' === $authorships[1]['email']);
 }
 
 function test_createAuthorship_invalidArticleId()
@@ -460,7 +460,7 @@ function test_moveAuthorshipUp_invalidId()
 function test_moveAuthorshipDown_successful()
 {
     $connection = db\connect('demo');
-    db\moveAuthorshipUp($connection, 7);
+    db\moveAuthorshipDown($connection, 7);
     $authorships = db\collectAuthorshipsByArticleId($connection, 6);
     assert(3 === count($authorships));
     assert(8 === $authorships[0]['id']);
@@ -477,7 +477,7 @@ function test_moveAuthorshipDown_successful()
 function test_moveAuthorshipDown_last()
 {
     $connection = db\connect('demo');
-    db\moveAuthorshipUp($connection, 9);
+    db\moveAuthorshipDown($connection, 9);
     $authorships = db\collectAuthorshipsByArticleId($connection, 6);
     assert(3 === count($authorships));
     assert(7 === $authorships[0]['id']);
