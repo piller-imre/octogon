@@ -1089,7 +1089,19 @@ function removeAuthorship($connection, $authorshipId)
  */
 function collectEditors($connection)
 {
-
+    $sql = <<<SQL
+        SELECT given_name, family_name, affiliation, email
+        FROM contributors JOIN editors
+        ON contributors.id = editors.contributor_id
+        ORDER BY indx
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $result = $stmt->execute();
+    $editors = [];
+    while (($row = $result->fetchArray(SQLITE3_ASSOC))) {
+        array_push($editors, $row);
+    }
+    return $editors;
 }
 
 /**
@@ -1097,13 +1109,23 @@ function collectEditors($connection)
  */
 function addToEditorialBoard($connection, $contributorId)
 {
+    checkContributorId($connection, $contributorId);
     $sql = <<<SQL
         INSERT INTO editors (contributor_id, indx)
-        VALUES (:contributor_id, 0)
+        VALUES (
+            :contributor_id,
+            (
+                SELECT count(id)
+                FROM editors
+            )
+        )
     SQL;
     $stmt = $connection->prepare($sql);
     $stmt->bindParam(':contributor_id', $contributorId, SQLITE3_INTEGER);
     $stmt->execute();
+    if ($connection->lastErrorMsg() == 'UNIQUE constraint failed: editors.contributor_id') {
+        throw new ValueError('The editor with contributor ID ('.$contributorId.') has been already added!');
+    }
     $editorId = $connection->lastInsertRowID();
     $stmt->close();
     return $editorId;
@@ -1114,7 +1136,36 @@ function addToEditorialBoard($connection, $contributorId)
  */
 function removeFromEditorialBoard($connection, $contributorId)
 {
+    checkContributorId($connection, $contributorId);
+    $sql = <<<SQL
+        DELETE FROM editors
+        WHERE contributor_id == :contributor_id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':contributor_id', $contributorId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    if ($connection->changes() != 1) {
+        throw new ValueError('The editor with contributor ID ('.$contributorId.') has not been added yet!');
+    }
+}
 
+/**
+ * Collect the ordered list of editor ids.
+ */
+function collectOrderedEditorIds($connection)
+{
+    $sql = <<<SQL
+        SELECT contributor_id
+        FROM editors
+        ORDER BY indx
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $result = $stmt->execute();
+    $orderedIds = [];
+    while (($row = $result->fetchArray(SQLITE3_ASSOC))) {
+        array_push($orderedIds, $row['contributor_id']);
+    }
+    return $orderedIds;
 }
 
 /**
@@ -1122,7 +1173,35 @@ function removeFromEditorialBoard($connection, $contributorId)
  */
 function moveEditorUp($connection, $contributorId)
 {
-
+    $orderedIds = collectOrderedEditorIds($connection);
+    $i = 0;
+    while ($i < count($orderedIds) && $orderedIds[$i] != $contributorId) {
+        ++$i;
+    }
+    if ($i == count($orderedIds)) {
+        throw new ValueError('The contributor ID ('.$contributorId.') is missing!');
+    }
+    if ($i == 0) {
+        return;
+    }
+    $sql = <<<SQL
+        UPDATE editors
+        SET indx = indx - 1
+        WHERE contributor_id = :contributor_id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':contributor_id', $contributorId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    $stmt->close();
+    $sql = <<<SQL
+        UPDATE editors
+        SET indx = indx + 1
+        WHERE contributor_id = :contributor_id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':contributor_id', $orderedIds[$i - 1], SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    $stmt->close();
 }
 
 /**
@@ -1130,7 +1209,35 @@ function moveEditorUp($connection, $contributorId)
  */
 function moveEditorDown($connection, $contributorId)
 {
-
+    $orderedIds = collectOrderedEditorIds($connection);
+    $i = 0;
+    while ($i < count($orderedIds) && $orderedIds[$i] != $contributorId) {
+        ++$i;
+    }
+    if ($i == count($orderedIds)) {
+        throw new ValueError('The contributor ID ('.$contributorId.') is missing!');
+    }
+    if ($i == count($orderedIds) - 1) {
+        return;
+    }
+    $sql = <<<SQL
+        UPDATE editors
+        SET indx = indx + 1
+        WHERE contributor_id = :contributor_id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':contributor_id', $contributorId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    $stmt->close();
+    $sql = <<<SQL
+        UPDATE editors
+        SET indx = indx - 1
+        WHERE contributor_id = :contributor_id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':contributor_id', $orderedIds[$i + 1], SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    $stmt->close();
 }
 
 /**

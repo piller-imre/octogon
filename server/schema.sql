@@ -65,7 +65,7 @@ CREATE TABLE authorships (
 
 CREATE TABLE editors (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    contributor_id INTEGER NOT NULL,
+    contributor_id INTEGER UNIQUE NOT NULL,
     indx INTEGER NOT NULL,
     FOREIGN KEY(contributor_id) REFERENCES contributors(id)
 );

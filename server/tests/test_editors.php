@@ -6,7 +6,7 @@ function test_collectEditors_empty()
 {
     $connection = db\connect('empty');
     $editors = db\collectEditors($connection);
-    assert([] === $posts);
+    assert([] === $editors);
 }
 
 function test_collectEditors_multiple()
@@ -38,10 +38,10 @@ function test_addToEditorialBoard_successful()
     db\addToEditorialBoard($connection, 4);
     $editors = db\collectEditors($connection);
     assert(5, count($editors));
-    assert('Sever S.' === $editors[3]['given_name']);
-    assert('Dragomir' === $editors[3]['family_name']);
-    assert('Victoria University, Melbourne, Australia' === $editors[3]['affiliation']);
-    assert('dragomir@octogon.com' === $editors[3]['email']);
+    assert('Sever S.' === $editors[4]['given_name']);
+    assert('Dragomir' === $editors[4]['family_name']);
+    assert('Victoria University, Melbourne, Australia' === $editors[4]['affiliation']);
+    assert('dragomir@octogon.com' === $editors[4]['email']);
 }
 
 function test_addToEditorialBoard_invalidId()
@@ -67,7 +67,7 @@ function test_addToEditorialBoard_alreadyAdded()
         assert(false, 'Exception has not raised!');
     }
     catch (db\ValueError $error) {
-        assert('The editor with contributor ID (8) has been already added!' === $error->getMessage());
+        assert('The editor with contributor ID (2) has been already added!' === $error->getMessage());
     }
     catch (Exception $error) {
         assert(false, 'Invalid exception type!');
@@ -193,22 +193,22 @@ function test_moveEditorDown_successful()
     db\moveEditorDown($connection, 2);
     $editors = db\collectEditors($connection);
     assert(4, count($editors));
-    assert('Péter' === $editors[0]['given_name']);
-    assert('Körtesi' === $editors[0]['family_name']);
-    assert('University of Miskolc, Miskolc, Hungary' === $editors[0]['affiliation']);
-    assert('pkortesi@octogon.com' === $editors[0]['email']);
-    assert('José Luis' === $editors[1]['given_name']);
-    assert('Díaz-Barrero' === $editors[1]['family_name']);
-    assert('Universitat Politechnica de Catalunya, Barcelona, Spain' === $editors[1]['affiliation']);
-    assert('barrero@octogon.com' === $editors[1]['email']);
-    assert('Zhao' === $editors[2]['given_name']);
-    assert('Changjian' === $editors[2]['family_name']);
-    assert('China Jiliang University, Hangzhou, China' === $editors[2]['affiliation']);
-    assert('zhao@octogon.com' === $editors[2]['email']);
-    assert('Ovodiu T.' === $editors[3]['given_name']);
-    assert('Pop' === $editors[3]['family_name']);
-    assert('National College Mihai Eminescu, Satu Mare, Romania' === $editors[3]['affiliation']);
-    assert('pop@octogon.com' === $editors[3]['email']);
+    assert('José Luis' === $editors[0]['given_name']);
+    assert('Díaz-Barrero' === $editors[0]['family_name']);
+    assert('Universitat Politechnica de Catalunya, Barcelona, Spain' === $editors[0]['affiliation']);
+    assert('barrero@octogon.com' === $editors[0]['email']);
+    assert('Péter' === $editors[1]['given_name']);
+    assert('Körtesi' === $editors[1]['family_name']);
+    assert('University of Miskolc, Miskolc, Hungary' === $editors[1]['affiliation']);
+    assert('pkortesi@octogon.com' === $editors[1]['email']);
+    assert('Ovodiu T.' === $editors[2]['given_name']);
+    assert('Pop' === $editors[2]['family_name']);
+    assert('National College Mihai Eminescu, Satu Mare, Romania' === $editors[2]['affiliation']);
+    assert('pop@octogon.com' === $editors[2]['email']);
+    assert('Zhao' === $editors[3]['given_name']);
+    assert('Changjian' === $editors[3]['family_name']);
+    assert('China Jiliang University, Hangzhou, China' === $editors[3]['affiliation']);
+    assert('zhao@octogon.com' === $editors[3]['email']);
 }
 
 function test_moveEditorDown_invalidId()
