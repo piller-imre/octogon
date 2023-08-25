@@ -1245,7 +1245,19 @@ function moveEditorDown($connection, $contributorId)
  */
 function getPageContent($connection, $pageName)
 {
-
+    $sql = <<<SQL
+        SELECT content
+        FROM pages
+        WHERE name = :name
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':name', $pageName, SQLITE3_TEXT);
+    $result = $stmt->execute();
+    $page = $result->fetchArray(SQLITE3_ASSOC);
+    if ($page == false) {
+        throw new ValueError('The page name "'.$pageName.'" is invalid!');
+    }
+    return $page['content'];
 }
 
 /**
@@ -1253,7 +1265,22 @@ function getPageContent($connection, $pageName)
  */
 function updatePageContent($connection, $pageName, $content)
 {
-
+    if (trim($content) == '') {
+        throw new ValueError('The content of the page is missing!');
+    }
+    $sql = <<<SQL
+        UPDATE pages
+        SET content = :content, upload_date = :upload_date
+        WHERE name == :name
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':content', $content, SQLITE3_TEXT);
+    $stmt->bindParam(':upload_date', date('d-m-y h:i:s'), SQLITE3_TEXT);
+    $stmt->bindParam(':name', $pageName, SQLITE3_TEXT);
+    $result = $stmt->execute();
+    if ($connection->changes() != 1) {
+        throw new ValueError('The page name "'.$pageName.'" is invalid!');
+    }
 }
 
 /**

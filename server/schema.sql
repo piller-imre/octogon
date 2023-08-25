@@ -71,7 +71,7 @@ CREATE TABLE editors (
 );
 
 CREATE TABLE pages (
-    name TEXT NOT NULL,
+    name TEXT UNIQUE NOT NULL,
     content TEXT NOT NULL,
     upload_date TEXT NOT NULL
 );

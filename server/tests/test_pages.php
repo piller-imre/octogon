@@ -17,7 +17,7 @@ function test_getPageContent_invalidName()
         assert(false, 'Exception has not raised!');
     }
     catch (db\ValueError $error) {
-        assert('The page name "unknown" is invalid!', $error->getMessage());
+        assert('The page name "unknown" is invalid!' === $error->getMessage());
     }
     catch (Exception $error) {
         assert(false, 'Invalid exception type!');
@@ -40,7 +40,7 @@ function test_updatePageContent_invalidName()
         assert(false, 'Exception has not raised!');
     }
     catch (db\ValueError $error) {
-        assert('The page name "nonexisting" is invalid!', $error->getMessage());
+        assert('The page name "nonexisting" is invalid!' === $error->getMessage());
     }
     catch (Exception $error) {
         assert(false, 'Invalid exception type!');
@@ -55,7 +55,7 @@ function test_updatePageContent_missingContent()
         assert(false, 'Exception has not raised!');
     }
     catch (db\ValueError $error) {
-        assert('The content of the page is missing!', $error->getMessage());
+        assert('The content of the page is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
         assert(false, 'Invalid exception type!');
