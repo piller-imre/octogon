@@ -41,6 +41,7 @@ function connect($name = null)
 function isValidPassword($connection, $email, $password)
 {
     // TODO: Calc password hash!
+    return $password == 'nothing';
 }
 
 /**
