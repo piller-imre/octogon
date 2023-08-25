@@ -7,13 +7,13 @@ function test_createPost_successful()
     $connection = db\connect('demo');
     $post = array(
         'content' => 'This is a new post',
-        'upload_date' => '2023-03-30'
+        'upload_date' => '2023-03-31'
     );
     $postId = db\createPost($connection, $post);
-    assert(5, $postId);
+    assert(5 === $postId);
     $retrieved = db\getPostById($connection, $postId);
-    assert('This is a new post', $retrieved['content']);
-    assert('2023-03-30', $retrieved['upload_date']);
+    assert('This is a new post' === $retrieved['content']);
+    assert('2023-03-31' === $retrieved['upload_date']);
 }
 
 function test_createPost_missingContent()
@@ -28,7 +28,7 @@ function test_createPost_missingContent()
         assert(false, 'Exception has not raised!');
     }
     catch (db\ValueError $error) {
-        assert('The content of the post is missing!', $error->getMessage());
+        assert('The content of the post is missing!' === $error->getMessage());
     }
     catch (Exception $error) {
         assert(false, 'Invalid exception type!');
@@ -107,7 +107,7 @@ function test_updatePost_successful()
         'content' => 'Updated content',
         'upload_date' => '2023-03-10'
     );
-    db\updatePost($connection, 1, $post);
+    db\updatePost($connection, 3, $post);
     $post = db\getPostById($connection, 3);
     assert('Updated content' === $post['content']);
     assert('2023-03-10' === $post['upload_date']);
@@ -155,7 +155,8 @@ function test_removePost_successful()
 {
     $connection = db\connect('demo');
     db\removePost($connection, 2);
-    assert(3, count($posts));
+    $posts = db\collectPosts($connection);
+    assert(3 === count($posts));
     assert('Latest post' === $posts[0]['content']);
     assert('2023-03-30' === $posts[0]['upload_date']);
     assert('Third post' === $posts[1]['content']);

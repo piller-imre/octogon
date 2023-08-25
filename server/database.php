@@ -1288,7 +1288,20 @@ function updatePageContent($connection, $pageName, $content)
  */
 function createPost($connection, $post)
 {
-
+    if (trim($post['content']) == '') {
+        throw new ValueError('The content of the post is missing!');
+    }
+    $sql = <<<SQL
+        INSERT INTO posts (content, upload_date)
+        VALUES (:content, :upload_date)
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':content', $post['content'], SQLITE3_TEXT);
+    $stmt->bindParam(':upload_date', $post['upload_date'], SQLITE3_TEXT);
+    $stmt->execute();
+    $postId = $connection->lastInsertRowID();
+    $stmt->close();
+    return $postId;
 }
 
 /**
@@ -1296,7 +1309,17 @@ function createPost($connection, $post)
  */
 function collectPosts($connection)
 {
-
+    $sql = <<<SQL
+        SELECT content, upload_date
+        FROM posts
+        ORDER BY upload_date DESC
+    SQL;
+    $result = $connection->query($sql);
+    $posts = [];
+    while (($row = $result->fetchArray(SQLITE3_ASSOC))) {
+        array_push($posts, $row);
+    }
+    return $posts;
 }
 
 /**
@@ -1304,7 +1327,19 @@ function collectPosts($connection)
  */
 function getPostById($connection, $postId)
 {
-
+    $sql = <<<SQL
+        SELECT content, upload_date
+        FROM posts
+        WHERE id == :id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':id', $postId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    $post = $result->fetchArray(SQLITE3_ASSOC);
+    if ($post == false) {
+        throw new ValueError('The post ID ('.$postId.') is missing!');
+    }
+    return $post;
 }
 
 /**
@@ -1312,7 +1347,22 @@ function getPostById($connection, $postId)
  */
 function updatePost($connection, $postId, $post)
 {
-
+    if (trim($post['content']) == '') {
+        throw new ValueError('The content of the post is missing!');
+    }
+    $sql = <<<SQL
+        UPDATE posts
+        SET content = :content, upload_date = :upload_date
+        WHERE id = :id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':content', $post['content'], SQLITE3_TEXT);
+    $stmt->bindParam(':upload_date', $post['upload_date'], SQLITE3_TEXT);
+    $stmt->bindParam(':id', $postId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    if ($connection->changes() != 1) {
+        throw new ValueError('The post ID ('.$postId.') is missing!');
+    }
 }
 
 /**
@@ -1320,7 +1370,16 @@ function updatePost($connection, $postId, $post)
  */
 function removePost($connection, $postId)
 {
-
+    $sql = <<<SQL
+        DELETE FROM posts
+        WHERE id = :id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':id', $postId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    if ($connection->changes() != 1) {
+        throw new ValueError('The post ID ('.$postId.') is missing!');
+    }
 }
 
 ?>
