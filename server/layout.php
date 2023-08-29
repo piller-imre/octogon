@@ -5,21 +5,27 @@ TODO: Add parameter for disabling link on menu for the current page!
 <html>
     <head>
         <title>Octogon Mathematical Magazine</title>
+        <link rel="stylesheet" href="assets/octogon.css">
     </head>
     <body>
-        <div class="menu">
-            <ul>
-                <li><a href="index.php">Home</a></li>
-                <li><a href="archive.php">Archive</a></li>
-                <li><a href="rules.php">Rules</a></li>
-                <li><a href="editorial-board.php">Editorial Board</a></li>
-                <li><a href="contacts.php">Contacts</a></li>
-            </ul>
-        </div>
-        <div class="content">
+        <div class="main">
+            <div class="banner">
+            </div>
+            <div class="menu">
+                <div><a href="index.php">Home</a></div>
+                <div><a href="archive.php">Archive</a></div>
+                <div><a href="rules.php">Rules</a></div>
+                <div><a href="editorial-board.php">Editorial Board</a></div>
+                <div><a href="contacts.php">Contacts</a></div>
+            </div>
+            <div class="content">
 <?php } ?>
 
 <?php function afterContent() { ?>
+            </div>
+            <div class="footer">
+                <div style="padding-top: 4px;">Octogon Mathematical Magazine, 2023.</div>
+            </div>
         </div>
     </body>
 </html>

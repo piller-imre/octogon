@@ -1,0 +1,103 @@
+body {
+    background-image: url(../assets/images/gradient.png);
+    background-repeat: repeat-x;
+    background-color: #222222;
+}
+
+div.main {
+    width: 950px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div.banner {
+    background-image: url(../assets/images/banner.png);
+    height: 100px;
+}
+
+div.footer {
+    color: white;
+    background-image: url(../assets/images/footer.png);
+    height: 30px;
+    padding-left: 12px;
+}
+
+div.menu {
+    /* background-color: #740000; */
+    background-color: white;
+    float: left;
+    padding: 12px;
+    margin-left: 0px;
+}
+
+div.menu div {
+    margin-bottom: 12px;
+}
+
+div.menu a {
+    text-decoration: none;
+    color: #740000;
+}
+
+div.content {
+    background-color: white;
+    padding-left: 160px;
+    padding-top: 20px;
+    padding-bottom: 30px;
+    padding-right: 30px;
+}
+
+h1 {
+    margin-top: 0px;
+}
+
+div.article {
+    padding: 20px;
+    border: solid gray 1px;
+    margin-bottom: 18px;
+}
+
+div.article div.title {
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+div.article div.authors {
+    margin-bottom: 8px;
+    font-style: italic;
+}
+
+div.article div.abstract {
+    margin-bottom: 8px;
+}
+
+div.article div.pages {
+    font-style: italic;
+    margin-bottom: 8px;
+}
+
+div.article div.citation {
+    background-color: #EEE;
+    padding: 8px;
+}
+
+div.post {
+    margin-bottom: 16px;
+}
+
+div.post-date {
+    margin-top: 8px;
+    color: #888888;
+}
+
+div.editor {
+    margin-bottom: 16px;
+}
+
+div.editor-name {
+    font-weight: bold;
+}
+
+div.volume {
+    margin-bottom: 16px;
+}

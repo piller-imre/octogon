@@ -1,79 +1,54 @@
 <?php include "layout.php" ?>
 
 <?php beforeContent() ?>
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-<script>
-// https://docs.mathjax.org/en/latest/options/input/tex.html#tex-options
-window.MathJax = {
-  tex: {
-    inlineMath: [
-      ['$', '$'],
-      ['\\(', '\\)']
-    ],
-    displayMath: [
-      ['$$', '$$'],
-      ['\\[', '\\]']
-    ]
-  }
-};
-</script>
-<style>
-div.article {
-    width: 800px;
-    padding: 20px;
-    border: solid gray 1px;
-}
 
-div.article div.title {
-    margin-bottom: 8px;
-    font-weight: bold;
-}
+<h1>Archive</h1>
 
-div.article div.authors {
-    margin-bottom: 8px;
-    font-style: italic;
-}
+<?php
+require 'database.php';
 
-div.article div.abstract {
-    margin-bottom: 8px;
-}
+$connection = db\connect();
+$volumes = db\collectVolumes($connection);
+?>
 
-div.article div.pages {
-    font-style: italic;
-    margin-bottom: 8px;
-}
-
-div.article div.citation {
-    background-color: #EEE;
-    padding: 8px;
-}
-
-</style>
-
-    <h1>Archive</h1>
-    <div>
-
-<div class="article">
-    <div class="title">About one inequality from APMO, 20045-New solution and generalizations</div>
-    <div class="authors"><a href="">Arkady M. Alt</a></div>
-    <div class="abstract">
-Original problem from APMO, 2004/5 is:
-Prove that
-$$
-(a^2 + 2)(b^2 + 2)(c^2 + 2) \geq 9(ab + bc + ca)^2
-$$
-for any positive real numbers, $a, b, c$.
+<?php
+$monthNames = array(
+    1 => 'January',
+    2 => 'February',
+    3 => 'March',
+    4 => 'April',
+    5 => 'May',
+    6 => 'June',
+    7 => 'July',
+    8 => 'August',
+    9 => 'September',
+    10 => 'October',
+    11 => 'November',
+    12 => 'December'
+);
+foreach ($volumes as $volume) {
+    if ($volume['is_visible']) {
+        $monthName = $monthNames[$volume['month']];
+?>
+    <div class="volume">
+        <div>
+            <b>
+                Volume <?php echo($volume['volume']); ?>.
+                No. <?php echo($volume['number']); ?>
+                <?php echo($monthName); ?>,
+                <?php echo($volume['year']); ?>.
+            </b>
+        </div>
+        <div>
+            <?php echo($volume['cover_image']); ?>
+        </div>
+        <div>
+            <a href="volume.php?volumeId=<?php echo($volume['id']); ?>">Contents</a>
+        </div>
     </div>
-    <div class="pages">pp. 100-120.</div>
-    <div class="citation">
-    Arkady M. Alt:
-    About one inequality from APMO, 20045-New solution and generalizations,
-    Octogon Mathematical Magazine,
-    vol. 27, No. 1, 2019.
-    pp. 100-120.
-    </div>
-</div>
+<?php
+    }
+}
+?>
 
-    </div>
 <?php afterContent() ?>

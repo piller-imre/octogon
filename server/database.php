@@ -360,6 +360,26 @@ function collectDocuments($connection)
 }
 
 /**
+ * Get document by id.
+ */
+function getDocumentById($connection, $documentId)
+{
+    $sql = <<<SQL
+        SELECT id, name, upload_date
+        FROM documents
+        WHERE id == :id
+    SQL;
+    $stmt = $connection->prepare($sql);
+    $stmt->bindParam(':id', $documentId, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    $document = $result->fetchArray(SQLITE3_ASSOC);
+    if ($document == false) {
+        throw new ValueError('The document ID ('.$documentId.') is missing!');
+    }
+    return $document;
+}
+
+/**
  * Remove the document.
  */
 function removeDocument($connection, $documentId)
